@@ -12,8 +12,8 @@ export const Header = () => {
   return (
     <header className="sticky top-0 z-40 bg-background/85 backdrop-blur border-b border-border">
       <div className="container flex items-center justify-between h-20">
-        <Link to="/" className="font-display text-2xl tracking-wide">
-          Sublime <span className="text-accent">by</span> Geisa Lorena
+        <Link to="/" className="flex items-center" aria-label="Sublime by Geisa Lorena">
+          <img src={logo} alt="Sublime by Geisa Lorena" className="h-14 w-auto" />
         </Link>
         <nav className="hidden md:flex items-center gap-10 text-xs uppercase tracking-luxe">
           <NavLink to="/" end className={linkClass}>Início</NavLink>
