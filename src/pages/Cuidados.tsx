@@ -7,7 +7,7 @@ import { ArrowRight } from "lucide-react";
 
 const Cuidados = () => {
   useEffect(() => {
-    document.title = "Cuidados com o cabelo — maison.capilar";
+    document.title = "Cuidados com Cabelo — maison.capilar";
   }, []);
 
   return (
@@ -18,7 +18,7 @@ const Cuidados = () => {
         <div className="max-w-2xl mb-16">
           <p className="text-xs tracking-luxe uppercase text-accent mb-4">Diário capilar</p>
           <h1 className="font-display text-5xl md:text-6xl leading-[1.05] mb-6">
-            Cuidados com o cabelo
+            Cuidados com Cabelo
           </h1>
           <p className="text-muted-foreground text-lg leading-relaxed">
             Artigos, rituais e ciência por trás dos fios saudáveis. Conhecimento para você cuidar melhor do seu cabelo.

@@ -20,7 +20,7 @@ const Artigo = () => {
         <Header />
         <div className="container py-32 text-center">
           <h1 className="font-display text-3xl mb-4">Artigo não encontrado</h1>
-          <Link to="/cuidados" className="text-accent text-xs uppercase tracking-luxe">Voltar para Cuidados</Link>
+          <Link to="/cuidados" className="text-accent text-xs uppercase tracking-luxe">Voltar para Cuidados com Cabelo</Link>
         </div>
         <Footer />
       </div>
@@ -33,7 +33,7 @@ const Artigo = () => {
 
       <article className="container py-16 max-w-3xl">
         <Link to="/cuidados" className="inline-flex items-center gap-2 text-xs uppercase tracking-luxe text-muted-foreground hover:text-accent mb-8">
-          <ArrowLeft className="w-3 h-3" /> Cuidados
+          <ArrowLeft className="w-3 h-3" /> Cuidados com Cabelo
         </Link>
 
         <div className="flex items-center gap-3 text-xs uppercase tracking-luxe text-muted-foreground mb-4">
