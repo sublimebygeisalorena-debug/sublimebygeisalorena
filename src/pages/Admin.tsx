@@ -16,7 +16,7 @@ const Admin = () => {
   const [rows, setRows] = useState<ProfileRow[]>([]);
 
   useEffect(() => {
-    document.title = "Admin — maison.capilar";
+    document.title = "Admin — Sublime by Geisa Lorena";
     (async () => {
       const { data } = await supabase.from("profiles").select("id, full_name, phone, city, state, created_at").order("created_at", { ascending: false });
       setRows(data ?? []);

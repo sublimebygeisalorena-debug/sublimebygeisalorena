@@ -20,7 +20,7 @@ const Cuidados = () => {
   });
 
   useEffect(() => {
-    document.title = "Cuidados com Cabelo — maison.capilar";
+    document.title = "Cuidados com Cabelo — Sublime by Geisa Lorena";
     (async () => {
       const { data: rows } = await supabase
         .from("articles")

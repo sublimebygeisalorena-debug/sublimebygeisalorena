@@ -32,7 +32,7 @@ const ProductPage = () => {
   }, [handle]);
 
   useEffect(() => {
-    if (product) document.title = `${product.title} — maison.capilar`;
+    if (product) document.title = `${product.title} — Sublime by Geisa Lorena`;
   }, [product]);
 
   if (loading) {

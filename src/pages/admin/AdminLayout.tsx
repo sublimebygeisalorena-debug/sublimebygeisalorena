@@ -16,7 +16,7 @@ const AdminLayout = () => (
     <Header />
     <section className="container py-12">
       <p className="text-xs tracking-luxe uppercase text-accent mb-3">Painel admin</p>
-      <h1 className="font-display text-3xl md:text-4xl mb-8">maison.capilar</h1>
+      <h1 className="font-display text-3xl md:text-4xl mb-8">Sublime by Geisa Lorena</h1>
       <nav className="flex flex-wrap gap-x-8 gap-y-3 border-b border-border mb-10">
         {tabs.map((t) => (
           <NavLink key={t.to} to={t.to} end={t.end}

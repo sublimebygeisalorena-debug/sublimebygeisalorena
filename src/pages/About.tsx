@@ -7,11 +7,11 @@ import { Sparkles, ShieldCheck, Leaf } from "lucide-react";
 import { useSiteContent } from "@/hooks/useSiteContent";
 
 const About = () => {
-  useEffect(() => { document.title = "Sobre — maison.capilar"; }, []);
+  useEffect(() => { document.title = "Sobre — Sublime by Geisa Lorena"; }, []);
   const { data } = useSiteContent("about", {
     eyebrow: "Sobre a marca",
     title: "Cosmética capilar com propósito.",
-    intro: "A maison.capilar é uma marca brasileira dedicada a fórmulas profissionais de alta performance.",
+    intro: "A Sublime by Geisa Lorena é uma marca brasileira dedicada a fórmulas profissionais de alta performance.",
   });
   return (
     <div className="min-h-screen bg-background">

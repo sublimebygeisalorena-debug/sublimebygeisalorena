@@ -11,7 +11,7 @@ const Shop = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    document.title = "Loja — maison.capilar";
+    document.title = "Loja — Sublime by Geisa Lorena";
     (async () => {
       try {
         const data = await storefrontApiRequest(STOREFRONT_QUERY, { first: 50, query: null });

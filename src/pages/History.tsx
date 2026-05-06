@@ -5,11 +5,11 @@ import foundersImg from "@/assets/founders.jpg";
 import { useSiteContent } from "@/hooks/useSiteContent";
 
 const History = () => {
-  useEffect(() => { document.title = "Nossa História — maison.capilar"; }, []);
+  useEffect(() => { document.title = "Nossa História — Sublime by Geisa Lorena"; }, []);
   const { data } = useSiteContent("historia", {
     eyebrow: "Nossa história",
     title: "De um laboratório à sua bancada.",
-    intro: "Conheça a jornada por trás da maison.capilar.",
+    intro: "Conheça a jornada por trás da Sublime by Geisa Lorena.",
   });
   return (
     <div className="min-h-screen bg-background">
@@ -52,7 +52,7 @@ const History = () => {
             <div>
               <h2 className="font-display text-3xl mb-4">Os fundadores</h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                À frente da maison.capilar, dois fundadores complementares: uma cosmetóloga com mais de uma década de experiência em desenvolvimento de fórmulas profissionais, e um especialista em performance capilar formado em salões de alto padrão.
+                À frente da Sublime by Geisa Lorena, dois fundadores complementares: uma cosmetóloga com mais de uma década de experiência em desenvolvimento de fórmulas profissionais, e um especialista em performance capilar formado em salões de alto padrão.
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 Juntos, dividem a mesma obsessão: que cada gesto de cuidado seja seguro, eficiente e prazeroso.

@@ -22,7 +22,7 @@ const Artigo = () => {
       setLoading(true);
       const { data } = await supabase.from("articles").select("*").eq("slug", slug).maybeSingle();
       setArticle(data as Article | null);
-      if (data) document.title = `${data.title} — maison.capilar`;
+      if (data) document.title = `${data.title} — Sublime by Geisa Lorena`;
       const { data: rel } = await supabase.from("articles").select("*").neq("slug", slug).eq("published", true).limit(2);
       setRelated((rel ?? []) as Article[]);
       setLoading(false);
