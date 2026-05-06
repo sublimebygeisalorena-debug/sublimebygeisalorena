@@ -49,6 +49,8 @@ const App = () => (
               <Route index element={<AdminHome />} />
               <Route path="conteudo" element={<AdminContent />} />
               <Route path="artigos" element={<AdminArticles />} />
+              <Route path="artigos/novo" element={<AdminArticleEditor />} />
+              <Route path="artigos/:id" element={<AdminArticleEditor />} />
               <Route path="clientes" element={<AdminCustomers />} />
               <Route path="pedidos" element={<AdminOrders />} />
               <Route path="loja" element={<AdminShop />} />
