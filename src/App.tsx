@@ -14,6 +14,7 @@ import Cuidados from "./pages/Cuidados.tsx";
 import Artigo from "./pages/Artigo.tsx";
 import Auth from "./pages/Auth.tsx";
 import Conta from "./pages/Conta.tsx";
+import Pedidos from "./pages/Pedidos.tsx";
 import Admin from "./pages/Admin.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/cuidados/:slug" element={<Artigo />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/conta" element={<ProtectedRoute><Conta /></ProtectedRoute>} />
+            <Route path="/conta/pedidos" element={<ProtectedRoute><Pedidos /></ProtectedRoute>} />
             <Route path="/admin" element={<ProtectedRoute requireAdmin><Admin /></ProtectedRoute>} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
