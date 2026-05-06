@@ -1,7 +1,10 @@
 import { Link, NavLink } from "react-router-dom";
+import { User } from "lucide-react";
 import { CartDrawer } from "./CartDrawer";
+import { useAuth } from "@/hooks/useAuth";
 
 export const Header = () => {
+  const { user } = useAuth();
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     `hover:text-accent transition ${isActive ? "text-accent" : ""}`;
 
@@ -18,7 +21,16 @@ export const Header = () => {
           <NavLink to="/cuidados" className={linkClass}>Cuidados com Cabelo</NavLink>
           <NavLink to="/historia" className={linkClass}>Nossa História</NavLink>
         </nav>
-        <CartDrawer />
+        <div className="flex items-center gap-4">
+          <Link
+            to={user ? "/conta" : "/auth"}
+            aria-label={user ? "Minha conta" : "Entrar"}
+            className="hover:text-accent transition"
+          >
+            <User className="w-5 h-5" strokeWidth={1.4} />
+          </Link>
+          <CartDrawer />
+        </div>
       </div>
     </header>
   );
