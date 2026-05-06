@@ -14,7 +14,7 @@ export const Footer = () => {
     <footer className="border-t border-border mt-32 bg-secondary/40">
       <div className="container py-16 grid md:grid-cols-4 gap-10">
         <div className="md:col-span-2 flex items-start gap-6">
-          <img src={logo} alt="Sublime by Geisa Lorena" className="h-40 w-auto flex-shrink-0" />
+          <img src={logo} alt="Sublime by Geisa Lorena" className="h-40 w-auto flex-shrink-0 object-fill mx-0 px-0 py-0 my-0" />
           <p className="text-sm text-muted-foreground max-w-sm leading-relaxed pt-2">
             Cosmética capilar de alta performance. Fórmulas conscientes para resultados de salão, no conforto de casa.
           </p>
