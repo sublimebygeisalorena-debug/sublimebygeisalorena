@@ -1,5 +1,5 @@
 import { useSiteContent } from "@/hooks/useSiteContent";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo-footer.png";
 
 export const Footer = () => {
   const { data } = useSiteContent("contato", {
