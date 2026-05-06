@@ -19,7 +19,7 @@ import Admin from "./pages/Admin.tsx";
 import AdminLayout from "./pages/admin/AdminLayout.tsx";
 import AdminHome from "./pages/admin/AdminHome.tsx";
 import AdminContent from "./pages/admin/AdminContent.tsx";
-import { AdminArticles } from "./pages/admin/AdminArticles.tsx";
+import { AdminArticles, AdminArticleEditor } from "./pages/admin/AdminArticles.tsx";
 import AdminCustomers from "./pages/admin/AdminCustomers.tsx";
 import AdminOrders from "./pages/admin/AdminOrders.tsx";
 import AdminShop from "./pages/admin/AdminShop.tsx";
@@ -49,6 +49,8 @@ const App = () => (
               <Route index element={<AdminHome />} />
               <Route path="conteudo" element={<AdminContent />} />
               <Route path="artigos" element={<AdminArticles />} />
+              <Route path="artigos/novo" element={<AdminArticleEditor />} />
+              <Route path="artigos/:id" element={<AdminArticleEditor />} />
               <Route path="clientes" element={<AdminCustomers />} />
               <Route path="pedidos" element={<AdminOrders />} />
               <Route path="loja" element={<AdminShop />} />
