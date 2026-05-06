@@ -52,7 +52,10 @@ const Conta = () => {
             <p className="text-xs tracking-luxe uppercase text-accent mb-3">Minha conta</p>
             <h1 className="font-display text-4xl md:text-5xl">Olá{profile.full_name ? `, ${profile.full_name.split(" ")[0]}` : ""}</h1>
             <p className="text-muted-foreground text-sm mt-2">{user?.email}</p>
-            {isAdmin && <Link to="/admin" className="inline-block mt-3 text-xs uppercase tracking-luxe text-accent">Painel admin →</Link>}
+            <div className="flex flex-wrap gap-4 mt-3 text-xs uppercase tracking-luxe">
+              <Link to="/conta/pedidos" className="text-accent hover:underline">Meus pedidos →</Link>
+              {isAdmin && <Link to="/admin" className="text-accent hover:underline">Painel admin →</Link>}
+            </div>
           </div>
           <Button variant="ghost" onClick={signOut} className="rounded-none text-xs uppercase tracking-luxe">Sair</Button>
         </div>

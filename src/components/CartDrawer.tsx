@@ -5,19 +5,48 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetDescri
 import { ShoppingBag, Minus, Plus, Trash2, ExternalLink, Loader2 } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { formatBRL } from "@/lib/shopify";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 
 export const CartDrawer = () => {
   const [open, setOpen] = useState(false);
-  const { items, isLoading, isSyncing, updateQuantity, removeItem, getCheckoutUrl, syncCart } = useCartStore();
+  const { items, isLoading, isSyncing, updateQuantity, removeItem, getCheckoutUrl, syncCart, cartId } = useCartStore();
+  const { user } = useAuth();
   const totalItems = items.reduce((s, i) => s + i.quantity, 0);
   const total = items.reduce((s, i) => s + parseFloat(i.price.amount) * i.quantity, 0);
   const currency = items[0]?.price.currencyCode || "BRL";
 
   useEffect(() => { if (open) syncCart(); }, [open, syncCart]);
 
-  const checkout = () => {
+  const checkout = async () => {
     const url = getCheckoutUrl();
-    if (url) { window.open(url, "_blank"); setOpen(false); }
+    if (!url) return;
+    if (user) {
+      try {
+        await supabase.from("orders").insert({
+          user_id: user.id,
+          shopify_cart_id: cartId,
+          checkout_url: url,
+          total: Number(total.toFixed(2)),
+          currency,
+          item_count: totalItems,
+          status: "pending",
+          items: items.map((i) => ({
+            title: i.product.node.title,
+            handle: i.product.node.handle,
+            variantId: i.variantId,
+            variantTitle: i.variantTitle,
+            quantity: i.quantity,
+            price: i.price,
+            image: i.product.node.images?.edges?.[0]?.node?.url ?? null,
+          })),
+        });
+      } catch (e) {
+        console.error("Failed to record order", e);
+      }
+    }
+    window.open(url, "_blank");
+    setOpen(false);
   };
 
   return (
