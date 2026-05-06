@@ -14,7 +14,7 @@ export const Footer = () => {
     <footer className="border-t border-border mt-32 bg-secondary/40">
       <div className="container py-16 grid md:grid-cols-4 gap-10">
         <div className="md:col-span-2">
-          <h3 className="font-display text-2xl mb-4">Sublime <span className="text-accent">by</span> Geisa Lorena</h3>
+          <img src={logo} alt="Sublime by Geisa Lorena" className="h-20 w-auto mb-4" />
           <p className="text-sm text-muted-foreground max-w-sm leading-relaxed">
             Cosmética capilar de alta performance. Fórmulas conscientes para resultados de salão, no conforto de casa.
           </p>
