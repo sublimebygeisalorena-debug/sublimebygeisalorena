@@ -68,7 +68,7 @@ export const AdminArticles = () => {
 
 export const AdminArticleEditor = () => {
   const { id } = useParams();
-  const isNew = id === "novo";
+  const isNew = !id || id === "novo";
   const navigate = useNavigate();
   const [a, setA] = useState<Partial<Article>>({ title: "", slug: "", excerpt: "", category: "", reading_time: "", cover_url: "", content: "", published: true });
   const [loading, setLoading] = useState(!isNew);
