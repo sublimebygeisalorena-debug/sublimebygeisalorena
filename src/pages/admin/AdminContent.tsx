@@ -75,6 +75,17 @@ const blocks: Block[] = [
       { key: "hours", label: "Horário de atendimento", type: "text" },
     ],
   },
+  {
+    id: "social",
+    label: "Redes Sociais",
+    fields: [
+      { key: "instagram", label: "Instagram (URL)", type: "text" },
+      { key: "facebook", label: "Facebook (URL)", type: "text" },
+      { key: "tiktok", label: "TikTok (URL)", type: "text" },
+      { key: "youtube", label: "YouTube (URL)", type: "text" },
+      { key: "pinterest", label: "Pinterest (URL)", type: "text" },
+    ],
+  },
 ];
 
 const AdminContent = () => {

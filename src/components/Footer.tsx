@@ -1,5 +1,6 @@
 import { useSiteContent } from "@/hooks/useSiteContent";
 import logo from "@/assets/logo-footer.png";
+import { Instagram, Facebook, Youtube } from "lucide-react";
 
 export const Footer = () => {
   const { data } = useSiteContent("contato", {
@@ -10,10 +11,18 @@ export const Footer = () => {
     hours: "",
   });
 
+  const { data: social } = useSiteContent("social", {
+    instagram: "",
+    facebook: "",
+    tiktok: "",
+    youtube: "",
+    pinterest: "",
+  });
+
   return (
     <footer className="border-t border-border mt-32 bg-secondary/40">
       <div className="container py-16 grid md:grid-cols-4 gap-10">
-        <div className="md:col-span-2 flex items-start gap-6">
+        <div className="md:col-span-1 flex flex-col items-start gap-6">
           <img src={logo} alt="Sublime by Geisa Lorena" className="h-40 w-auto flex-shrink-0 object-fill mx-0 px-0 py-0 my-0" />
           <p className="text-sm text-muted-foreground max-w-sm leading-relaxed pt-2">
             Cosmética capilar de alta performance. Fórmulas conscientes para resultados de salão, no conforto de casa.
@@ -42,6 +51,36 @@ export const Footer = () => {
             {data.hours && <li>{data.hours}</li>}
             {data.address && <li className="whitespace-pre-line">{data.address}</li>}
           </ul>
+        </div>
+        <div>
+          <h4 className="text-xs uppercase tracking-luxe mb-4">Redes Sociais</h4>
+          <div className="flex gap-4">
+            {social.instagram && (
+              <a href={social.instagram} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-accent transition-colors" aria-label="Instagram">
+                <Instagram className="w-5 h-5" strokeWidth={1.5} />
+              </a>
+            )}
+            {social.facebook && (
+              <a href={social.facebook} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-accent transition-colors" aria-label="Facebook">
+                <Facebook className="w-5 h-5" strokeWidth={1.5} />
+              </a>
+            )}
+            {social.youtube && (
+              <a href={social.youtube} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-accent transition-colors" aria-label="YouTube">
+                <Youtube className="w-5 h-5" strokeWidth={1.5} />
+              </a>
+            )}
+            {social.tiktok && (
+              <a href={social.tiktok} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-accent transition-colors text-sm font-medium pt-0.5" aria-label="TikTok">
+                TIKTOK
+              </a>
+            )}
+            {social.pinterest && (
+              <a href={social.pinterest} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-accent transition-colors text-sm font-medium pt-0.5" aria-label="Pinterest">
+                PINTEREST
+              </a>
+            )}
+          </div>
         </div>
       </div>
       <div className="border-t border-border py-6 text-center text-xs text-muted-foreground tracking-wide">
