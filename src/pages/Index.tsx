@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { useCartSync } from "@/hooks/useCartSync";
+import { useSiteContent } from "@/hooks/useSiteContent";
 import { ShopifyProduct, STOREFRONT_QUERY, storefrontApiRequest } from "@/lib/shopify";
 import heroImg from "@/assets/hero.jpg";
 import foundersImg from "@/assets/founders.jpg";
@@ -13,6 +14,20 @@ const Index = () => {
   useCartSync();
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [loading, setLoading] = useState(true);
+  const { data: hero } = useSiteContent("home_hero", {
+    eyebrow: "Coleção essencial",
+    title: "A ciência do cuidado capilar em suas mãos.",
+    subtitle: "Fórmulas profissionais com pH balanceado, óleos nobres e proteção térmica.",
+    image_url: "",
+  });
+  const { data: history } = useSiteContent("home_history", {
+    eyebrow: "Nossa história",
+    title: "Onde a ciência encontra o cuidado.",
+    p1: "",
+    p2: "",
+    quote: "",
+    image_url: "",
+  });
 
   useEffect(() => {
     document.title = "maison.capilar — Cosmética capilar de alta performance";
@@ -24,6 +39,7 @@ const Index = () => {
     })();
   }, []);
 
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -32,12 +48,12 @@ const Index = () => {
       <section className="relative">
         <div className="container grid lg:grid-cols-2 gap-12 items-center py-20 lg:py-28">
           <div className="space-y-8 lg:pr-10">
-            <p className="text-xs tracking-luxe uppercase text-accent">Coleção essencial</p>
+            <p className="text-xs tracking-luxe uppercase text-accent">{hero.eyebrow}</p>
             <h1 className="font-display text-5xl md:text-6xl lg:text-7xl leading-[1.05]">
-              A ciência do cuidado capilar em suas mãos.
+              {hero.title}
             </h1>
-            <p className="text-muted-foreground text-lg max-w-md leading-relaxed">
-              Fórmulas profissionais com pH balanceado, óleos nobres e proteção térmica — para fios saudáveis, brilhantes e tratados em cada gesto.
+            <p className="text-muted-foreground text-lg max-w-md leading-relaxed whitespace-pre-line">
+              {hero.subtitle}
             </p>
             <div className="flex gap-4 pt-2">
               <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-none h-12 px-8 text-xs uppercase tracking-luxe">
@@ -50,7 +66,7 @@ const Index = () => {
           </div>
           <div className="relative">
             <div className="aspect-[4/5] overflow-hidden">
-              <img src={heroImg} alt="Cabelo saudável e brilhante" className="w-full h-full object-cover" width={1536} height={1024} />
+              <img src={hero.image_url || heroImg} alt="Cabelo saudável e brilhante" className="w-full h-full object-cover" width={1536} height={1024} />
             </div>
             <div className="absolute -bottom-6 -left-6 bg-background border border-border p-6 max-w-[220px] hidden md:block shadow-soft">
               <p className="font-display text-3xl">7</p>
@@ -109,20 +125,14 @@ const Index = () => {
       <section id="historia" className="bg-secondary/40 py-24">
         <div className="container grid lg:grid-cols-2 gap-16 items-center">
           <div className="aspect-[5/4] overflow-hidden">
-            <img src={foundersImg} alt="Fundadores em laboratório" className="w-full h-full object-cover" loading="lazy" width={1280} height={1024} />
+            <img src={history.image_url || foundersImg} alt="Fundadores em laboratório" className="w-full h-full object-cover" loading="lazy" width={1280} height={1024} />
           </div>
           <div className="space-y-6">
-            <p className="text-xs tracking-luxe uppercase text-accent">Nossa história</p>
-            <h2 className="font-display text-4xl md:text-5xl leading-tight">Onde a ciência encontra o cuidado.</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              A maison.capilar nasceu da inquietação de dois apaixonados por cosmética: a busca por fórmulas que entregassem o resultado de um salão profissional sem comprometer a saúde dos fios.
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              Começamos com uma progressiva de base ácida — uma tecnologia que alisa respeitando o pH natural do cabelo — e expandimos para um sistema completo de tratamento pós-química. Cada fórmula é desenvolvida com obsessão por performance e segurança.
-            </p>
-            <p className="font-display text-xl pt-2 italic">
-              "Democratizar o tratamento capilar de alta performance."
-            </p>
+            <p className="text-xs tracking-luxe uppercase text-accent">{history.eyebrow}</p>
+            <h2 className="font-display text-4xl md:text-5xl leading-tight">{history.title}</h2>
+            {history.p1 && <p className="text-muted-foreground leading-relaxed whitespace-pre-line">{history.p1}</p>}
+            {history.p2 && <p className="text-muted-foreground leading-relaxed whitespace-pre-line">{history.p2}</p>}
+            {history.quote && <p className="font-display text-xl pt-2 italic">"{history.quote}"</p>}
           </div>
         </div>
       </section>
