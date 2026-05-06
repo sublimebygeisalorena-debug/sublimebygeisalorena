@@ -15,6 +15,7 @@ export const Header = () => {
           <NavLink to="/" end className={linkClass}>Início</NavLink>
           <NavLink to="/loja" className={linkClass}>Loja</NavLink>
           <NavLink to="/sobre" className={linkClass}>Sobre</NavLink>
+          <NavLink to="/cuidados" className={linkClass}>Cuidados</NavLink>
           <NavLink to="/historia" className={linkClass}>Nossa História</NavLink>
         </nav>
         <CartDrawer />
