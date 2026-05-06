@@ -16,6 +16,13 @@ import Auth from "./pages/Auth.tsx";
 import Conta from "./pages/Conta.tsx";
 import Pedidos from "./pages/Pedidos.tsx";
 import Admin from "./pages/Admin.tsx";
+import AdminLayout from "./pages/admin/AdminLayout.tsx";
+import AdminHome from "./pages/admin/AdminHome.tsx";
+import AdminContent from "./pages/admin/AdminContent.tsx";
+import { AdminArticles } from "./pages/admin/AdminArticles.tsx";
+import AdminCustomers from "./pages/admin/AdminCustomers.tsx";
+import AdminOrders from "./pages/admin/AdminOrders.tsx";
+import AdminShop from "./pages/admin/AdminShop.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -38,7 +45,15 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/conta" element={<ProtectedRoute><Conta /></ProtectedRoute>} />
             <Route path="/conta/pedidos" element={<ProtectedRoute><Pedidos /></ProtectedRoute>} />
-            <Route path="/admin" element={<ProtectedRoute requireAdmin><Admin /></ProtectedRoute>} />
+            <Route path="/admin" element={<ProtectedRoute requireAdmin><AdminLayout /></ProtectedRoute>}>
+              <Route index element={<AdminHome />} />
+              <Route path="conteudo" element={<AdminContent />} />
+              <Route path="artigos" element={<AdminArticles />} />
+              <Route path="clientes" element={<AdminCustomers />} />
+              <Route path="pedidos" element={<AdminOrders />} />
+              <Route path="loja" element={<AdminShop />} />
+            </Route>
+            <Route path="/admin/legacy" element={<ProtectedRoute requireAdmin><Admin /></ProtectedRoute>} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
