@@ -2,6 +2,7 @@ import { Link, NavLink } from "react-router-dom";
 import { User } from "lucide-react";
 import { CartDrawer } from "./CartDrawer";
 import { useAuth } from "@/hooks/useAuth";
+import logo from "@/assets/logo.png";
 
 export const Header = () => {
   const { user } = useAuth();
