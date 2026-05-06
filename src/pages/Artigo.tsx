@@ -1,18 +1,35 @@
 import { Link, useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { articles } from "@/data/articles";
 import { ArrowLeft } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+
+interface Article {
+  slug: string; title: string; excerpt: string | null;
+  category: string | null; reading_time: string | null; cover_url: string | null;
+  content: string | null; created_at: string;
+}
 
 const Artigo = () => {
   const { slug } = useParams();
-  const article = articles.find((a) => a.slug === slug);
-  const related = articles.filter((a) => a.slug !== slug).slice(0, 2);
+  const [article, setArticle] = useState<Article | null>(null);
+  const [related, setRelated] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (article) document.title = `${article.title} — maison.capilar`;
-  }, [article]);
+    (async () => {
+      setLoading(true);
+      const { data } = await supabase.from("articles").select("*").eq("slug", slug).maybeSingle();
+      setArticle(data as Article | null);
+      if (data) document.title = `${data.title} — maison.capilar`;
+      const { data: rel } = await supabase.from("articles").select("*").neq("slug", slug).eq("published", true).limit(2);
+      setRelated((rel ?? []) as Article[]);
+      setLoading(false);
+    })();
+  }, [slug]);
+
+  if (loading) return <div className="min-h-screen flex items-center justify-center text-muted-foreground text-sm">Carregando…</div>;
 
   if (!article) {
     return (
@@ -27,33 +44,28 @@ const Artigo = () => {
     );
   }
 
+  const paragraphs = (article.content ?? "").split(/\n\n+/).filter(Boolean);
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
-
       <article className="container py-16 max-w-3xl">
         <Link to="/cuidados" className="inline-flex items-center gap-2 text-xs uppercase tracking-luxe text-muted-foreground hover:text-accent mb-8">
           <ArrowLeft className="w-3 h-3" /> Cuidados com Cabelo
         </Link>
-
         <div className="flex items-center gap-3 text-xs uppercase tracking-luxe text-muted-foreground mb-4">
-          <span className="text-accent">{article.category}</span>
-          <span>·</span>
-          <span>{article.readingTime}</span>
-          <span>·</span>
-          <span>{article.date}</span>
+          {article.category && <><span className="text-accent">{article.category}</span><span>·</span></>}
+          {article.reading_time && <><span>{article.reading_time}</span><span>·</span></>}
+          <span>{new Date(article.created_at).toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" })}</span>
         </div>
-
         <h1 className="font-display text-4xl md:text-5xl leading-[1.1] mb-8">{article.title}</h1>
-
-        <div className="aspect-[16/9] overflow-hidden mb-12 bg-muted">
-          <img src={article.cover} alt={article.title} className="w-full h-full object-cover" />
-        </div>
-
+        {article.cover_url && (
+          <div className="aspect-[16/9] overflow-hidden mb-12 bg-muted">
+            <img src={article.cover_url} alt={article.title} className="w-full h-full object-cover" />
+          </div>
+        )}
         <div className="space-y-6 text-lg leading-relaxed text-foreground/90">
-          {article.content.map((p, i) => (
-            <p key={i}>{p}</p>
-          ))}
+          {paragraphs.map((p, i) => <p key={i}>{p}</p>)}
         </div>
       </article>
 
@@ -65,7 +77,7 @@ const Artigo = () => {
               {related.map((a) => (
                 <Link key={a.slug} to={`/cuidados/${a.slug}`} className="group block">
                   <div className="aspect-[4/3] overflow-hidden mb-4 bg-muted">
-                    <img src={a.cover} alt={a.title} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    {a.cover_url && <img src={a.cover_url} alt={a.title} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />}
                   </div>
                   <p className="text-xs uppercase tracking-luxe text-accent mb-2">{a.category}</p>
                   <h3 className="font-display text-xl group-hover:text-accent transition-colors">{a.title}</h3>
@@ -75,7 +87,6 @@ const Artigo = () => {
           </div>
         </section>
       )}
-
       <Footer />
     </div>
   );
