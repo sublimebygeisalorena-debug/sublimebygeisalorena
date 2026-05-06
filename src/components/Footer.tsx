@@ -13,7 +13,7 @@ export const Footer = () => {
     <footer className="border-t border-border mt-32 bg-secondary/40">
       <div className="container py-16 grid md:grid-cols-4 gap-10">
         <div className="md:col-span-2">
-          <h3 className="font-display text-2xl mb-4">maison<span className="text-accent">.</span>capilar</h3>
+          <h3 className="font-display text-2xl mb-4">Sublime <span className="text-accent">by</span> Geisa Lorena</h3>
           <p className="text-sm text-muted-foreground max-w-sm leading-relaxed">
             Cosmética capilar de alta performance. Fórmulas conscientes para resultados de salão, no conforto de casa.
           </p>
@@ -44,7 +44,7 @@ export const Footer = () => {
         </div>
       </div>
       <div className="border-t border-border py-6 text-center text-xs text-muted-foreground tracking-wide">
-        © {new Date().getFullYear()} maison.capilar — Todos os direitos reservados
+        © {new Date().getFullYear()} Sublime by Geisa Lorena — Todos os direitos reservados
       </div>
     </footer>
   );
