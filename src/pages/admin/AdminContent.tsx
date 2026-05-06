@@ -64,6 +64,17 @@ const blocks: Block[] = [
       { key: "intro", label: "Introdução", type: "textarea" },
     ],
   },
+  {
+    id: "contato",
+    label: "Contato e Suporte",
+    fields: [
+      { key: "email", label: "E-mail de suporte", type: "text" },
+      { key: "phone", label: "Telefone / WhatsApp", type: "text" },
+      { key: "phone_display", label: "Telefone (formato exibido)", type: "text" },
+      { key: "address", label: "Endereço", type: "textarea" },
+      { key: "hours", label: "Horário de atendimento", type: "text" },
+    ],
+  },
 ];
 
 const AdminContent = () => {
