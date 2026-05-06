@@ -2,19 +2,24 @@ import { useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import foundersImg from "@/assets/founders.jpg";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 const History = () => {
   useEffect(() => { document.title = "Nossa História — maison.capilar"; }, []);
+  const { data } = useSiteContent("historia", {
+    eyebrow: "Nossa história",
+    title: "De um laboratório à sua bancada.",
+    intro: "Conheça a jornada por trás da maison.capilar.",
+  });
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <section className="container py-20 lg:py-28 max-w-4xl">
-        <p className="text-xs tracking-luxe uppercase text-accent mb-4">Nossa história</p>
-        <h1 className="font-display text-5xl md:text-7xl leading-[1.05] mb-10">Onde a ciência encontra o cuidado.</h1>
-        <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
-          A maison.capilar nasceu da inquietação de dois apaixonados por cosmética: a busca por fórmulas que entregassem o resultado de um salão profissional sem comprometer a saúde dos fios.
-        </p>
+        <p className="text-xs tracking-luxe uppercase text-accent mb-4">{data.eyebrow}</p>
+        <h1 className="font-display text-5xl md:text-7xl leading-[1.05] mb-10">{data.title}</h1>
+        <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl whitespace-pre-line">{data.intro}</p>
       </section>
+
 
       <section className="container max-w-5xl pb-24">
         <div className="aspect-[16/9] overflow-hidden mb-16">

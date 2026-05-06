@@ -4,19 +4,24 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Sparkles, ShieldCheck, Leaf } from "lucide-react";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 const About = () => {
   useEffect(() => { document.title = "Sobre — maison.capilar"; }, []);
+  const { data } = useSiteContent("about", {
+    eyebrow: "Sobre a marca",
+    title: "Cosmética capilar com propósito.",
+    intro: "A maison.capilar é uma marca brasileira dedicada a fórmulas profissionais de alta performance.",
+  });
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <section className="container py-20 lg:py-28 max-w-4xl">
-        <p className="text-xs tracking-luxe uppercase text-accent mb-4">Sobre a marca</p>
-        <h1 className="font-display text-5xl md:text-7xl leading-[1.05] mb-10">Cosmética capilar com propósito.</h1>
-        <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
-          A maison.capilar é uma marca brasileira dedicada a fórmulas profissionais de alta performance — desenvolvidas com obsessão por resultado, segurança e respeito à fibra capilar.
-        </p>
+        <p className="text-xs tracking-luxe uppercase text-accent mb-4">{data.eyebrow}</p>
+        <h1 className="font-display text-5xl md:text-7xl leading-[1.05] mb-10">{data.title}</h1>
+        <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl whitespace-pre-line">{data.intro}</p>
       </section>
+
 
       <section className="bg-secondary/40 py-20">
         <div className="container max-w-5xl">
