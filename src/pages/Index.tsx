@@ -30,7 +30,7 @@ const Index = () => {
   });
 
   useEffect(() => {
-    document.title = "maison.capilar — Cosmética capilar de alta performance";
+    document.title = "Sublime by Geisa Lorena — Cosmética capilar de alta performance";
     (async () => {
       try {
         const data = await storefrontApiRequest(STOREFRONT_QUERY, { first: 20, query: null });
@@ -98,7 +98,7 @@ const Index = () => {
       <section id="produtos" className="container py-24">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <p className="text-xs tracking-luxe uppercase text-accent mb-4">Nossa coleção</p>
-          <h2 className="font-display text-4xl md:text-5xl mb-4">Os essenciais da maison</h2>
+          <h2 className="font-display text-4xl md:text-5xl mb-4">Os essenciais da Sublime</h2>
           <p className="text-muted-foreground">Cinco produtos pensados para um ritual completo de cuidado.</p>
         </div>
 

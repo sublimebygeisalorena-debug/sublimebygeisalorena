@@ -16,7 +16,7 @@ const Conta = () => {
     full_name: "", phone: "", address_line: "", city: "", state: "", postal_code: "", country: "Brasil",
   });
 
-  useEffect(() => { document.title = "Minha conta — maison.capilar"; }, []);
+  useEffect(() => { document.title = "Minha conta — Sublime by Geisa Lorena"; }, []);
 
   useEffect(() => {
     if (!user) return;

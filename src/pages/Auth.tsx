@@ -27,7 +27,7 @@ const Auth = () => {
   const from = (location.state as { from?: { pathname: string } })?.from?.pathname || "/conta";
 
   useEffect(() => {
-    document.title = mode === "login" ? "Entrar — maison.capilar" : "Criar conta — maison.capilar";
+    document.title = mode === "login" ? "Entrar — Sublime by Geisa Lorena" : "Criar conta — Sublime by Geisa Lorena";
   }, [mode]);
 
   useEffect(() => {

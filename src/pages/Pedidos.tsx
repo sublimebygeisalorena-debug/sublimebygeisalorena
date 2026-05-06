@@ -41,7 +41,7 @@ const Pedidos = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => { document.title = "Meus pedidos — maison.capilar"; }, []);
+  useEffect(() => { document.title = "Meus pedidos — Sublime by Geisa Lorena"; }, []);
 
   useEffect(() => {
     if (!user) return;
