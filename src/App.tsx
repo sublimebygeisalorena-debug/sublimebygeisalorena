@@ -8,6 +8,8 @@ import Shop from "./pages/Shop.tsx";
 import About from "./pages/About.tsx";
 import History from "./pages/History.tsx";
 import ProductPage from "./pages/Product.tsx";
+import Cuidados from "./pages/Cuidados.tsx";
+import Artigo from "./pages/Artigo.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
