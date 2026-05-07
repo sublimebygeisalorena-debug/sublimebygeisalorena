@@ -13,7 +13,7 @@ export const Header = () => {
     <header className="sticky top-0 z-40 bg-background/85 backdrop-blur border-b border-border">
       <div className="container flex items-center justify-between h-20">
         <Link to="/" className="flex items-center" aria-label="Sublime by Geisa Lorena">
-          <img src={logo} alt="Sublime by Geisa Lorena" className="h-14 w-auto" />
+          <img src={logo} alt="Sublime by Geisa Lorena" className="h-10 sm:h-12 md:h-14 w-auto object-contain" />
         </Link>
         <nav className="hidden md:flex items-center gap-10 text-xs uppercase tracking-luxe">
           <NavLink to="/" end className={linkClass}>Início</NavLink>
