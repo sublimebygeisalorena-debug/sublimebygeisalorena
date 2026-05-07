@@ -3,6 +3,7 @@ import { Sparkles, Leaf, FlaskConical, Heart } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
+import { TestimonialsCarousel } from "@/components/TestimonialsCarousel";
 import { Button } from "@/components/ui/button";
 import { useCartSync } from "@/hooks/useCartSync";
 import { useSiteContent } from "@/hooks/useSiteContent";
@@ -158,6 +159,7 @@ const Index = () => {
         </div>
       </section>
 
+      <TestimonialsCarousel />
       <Footer />
     </div>
   );
