@@ -7,7 +7,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const SHOPIFY_DOMAIN = 'studiosublime.myshopify.com'; // permanent domain
+const SHOPIFY_DOMAIN = 'radiant-strands-studio-2qzze.myshopify.com'; // permanent domain
 const SHOPIFY_API_VERSION = '2025-07';
 const LOW_STOCK_THRESHOLD = 5;
 
