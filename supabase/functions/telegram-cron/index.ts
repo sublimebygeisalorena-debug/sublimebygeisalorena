@@ -79,7 +79,7 @@ async function checkLowStock() {
       const qty = Number(v.inventory_quantity ?? 0);
       if (qty <= LOW_STOCK_THRESHOLD && qty >= 0) {
         const text = `📉 <b>Estoque baixo</b>\n` +
-          `${p.title}${v.title && v.title !== 'Default Title' ? ` — ${v.title}` : ''}\n` +
+          `${escapeHtml(p.title)}${v.title && v.title !== 'Default Title' ? ` — ${escapeHtml(v.title)}` : ''}\n` +
           `Restam: <b>${qty}</b> unidade(s)`;
         const res = await sendTelegram(text, { dedupeKey: `lowstock:${v.id}:${today}` });
         if (!(res as any).skipped) sent++;
