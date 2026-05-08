@@ -1,6 +1,6 @@
 // Periodic checks: abandoned checkouts, low stock, daily summary
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { sendTelegram, fmtBRL, verifyWebhookSecret } from '../_shared/telegram.ts';
+import { sendTelegram, fmtBRL, verifyWebhookSecret, escapeHtml } from '../_shared/telegram.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
