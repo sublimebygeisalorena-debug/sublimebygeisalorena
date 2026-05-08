@@ -25,7 +25,7 @@ async function getExpectedSecret(): Promise<string> {
   const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
   const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
   const supabase = createClient(SUPABASE_URL, SERVICE_KEY);
-  const { data, error } = await supabase.schema('private' as any).rpc('get_webhook_secret', { _id: 'telegram' });
+  const { data, error } = await supabase.rpc('get_telegram_webhook_secret');
   if (error || !data) throw new Error('webhook secret unavailable');
   cachedSecret = String(data);
   return cachedSecret;
