@@ -137,6 +137,42 @@ export type Database = {
         }
         Relationships: []
       }
+      reviews: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          image_url: string | null
+          is_approved: boolean | null
+          product_handle: string
+          rating: number
+          user_id: string | null
+          user_name: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_approved?: boolean | null
+          product_handle: string
+          rating: number
+          user_id?: string | null
+          user_name: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_approved?: boolean | null
+          product_handle?: string
+          rating?: number
+          user_id?: string | null
+          user_name?: string
+        }
+        Relationships: []
+      }
       site_content: {
         Row: {
           data: Json
