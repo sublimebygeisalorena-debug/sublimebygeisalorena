@@ -2,3 +2,9 @@ project_id = "fhqkwabwvcqsilfieabj"
 
 [functions.telegram-notify-order]
 verify_jwt = false
+
+[functions.telegram-event]
+verify_jwt = false
+
+[functions.telegram-cron]
+verify_jwt = false
