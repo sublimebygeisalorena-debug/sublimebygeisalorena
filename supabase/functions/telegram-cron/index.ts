@@ -47,15 +47,15 @@ async function checkAbandonedCheckouts() {
   for (const c of checkouts) {
     if (c.completed_at) continue;
     const items = (c.line_items ?? []).slice(0, 8)
-      .map((li: any) => `• ${li.quantity}x ${li.title}`).join('\n') || '—';
+      .map((li: any) => `• ${Number(li.quantity ?? 1)}x ${escapeHtml(li.title)}`).join('\n') || '—';
     const total = Number(c.total_price ?? 0);
     const customer = c.email || c.customer?.email || '—';
     const text = `🛍️ <b>Carrinho abandonado</b>\n` +
-      `Cliente: ${customer}\n` +
+      `Cliente: ${escapeHtml(customer)}\n` +
       `Criado: ${new Date(c.created_at).toLocaleString('pt-BR')}\n` +
       `Itens:\n${items}\n` +
       `Total: <b>${fmtBRL(total, c.presentment_currency ?? c.currency)}</b>` +
-      (c.abandoned_checkout_url ? `\n<a href="${c.abandoned_checkout_url}">Recuperar checkout</a>` : '');
+      (c.abandoned_checkout_url ? `\n<a href="${escapeHtml(c.abandoned_checkout_url)}">Recuperar checkout</a>` : '');
     const res = await sendTelegram(text, { dedupeKey: `abandoned:${c.id}` });
     if (!(res as any).skipped) sent++;
   }
