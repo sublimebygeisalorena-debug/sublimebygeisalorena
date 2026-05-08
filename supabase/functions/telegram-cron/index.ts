@@ -1,10 +1,10 @@
 // Periodic checks: abandoned checkouts, low stock, daily summary
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { sendTelegram, fmtBRL } from '../_shared/telegram.ts';
+import { sendTelegram, fmtBRL, verifyWebhookSecret, escapeHtml } from '../_shared/telegram.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-webhook-secret',
 };
 
 const SHOPIFY_DOMAIN = 'radiant-strands-studio-2qzze.myshopify.com'; // permanent domain
@@ -47,15 +47,15 @@ async function checkAbandonedCheckouts() {
   for (const c of checkouts) {
     if (c.completed_at) continue;
     const items = (c.line_items ?? []).slice(0, 8)
-      .map((li: any) => `• ${li.quantity}x ${li.title}`).join('\n') || '—';
+      .map((li: any) => `• ${Number(li.quantity ?? 1)}x ${escapeHtml(li.title)}`).join('\n') || '—';
     const total = Number(c.total_price ?? 0);
     const customer = c.email || c.customer?.email || '—';
     const text = `🛍️ <b>Carrinho abandonado</b>\n` +
-      `Cliente: ${customer}\n` +
+      `Cliente: ${escapeHtml(customer)}\n` +
       `Criado: ${new Date(c.created_at).toLocaleString('pt-BR')}\n` +
       `Itens:\n${items}\n` +
       `Total: <b>${fmtBRL(total, c.presentment_currency ?? c.currency)}</b>` +
-      (c.abandoned_checkout_url ? `\n<a href="${c.abandoned_checkout_url}">Recuperar checkout</a>` : '');
+      (c.abandoned_checkout_url ? `\n<a href="${escapeHtml(c.abandoned_checkout_url)}">Recuperar checkout</a>` : '');
     const res = await sendTelegram(text, { dedupeKey: `abandoned:${c.id}` });
     if (!(res as any).skipped) sent++;
   }
@@ -79,7 +79,7 @@ async function checkLowStock() {
       const qty = Number(v.inventory_quantity ?? 0);
       if (qty <= LOW_STOCK_THRESHOLD && qty >= 0) {
         const text = `📉 <b>Estoque baixo</b>\n` +
-          `${p.title}${v.title && v.title !== 'Default Title' ? ` — ${v.title}` : ''}\n` +
+          `${escapeHtml(p.title)}${v.title && v.title !== 'Default Title' ? ` — ${escapeHtml(v.title)}` : ''}\n` +
           `Restam: <b>${qty}</b> unidade(s)`;
         const res = await sendTelegram(text, { dedupeKey: `lowstock:${v.id}:${today}` });
         if (!(res as any).skipped) sent++;
@@ -115,7 +115,7 @@ async function dailySummary(supabase: any) {
     }
   }
   const top = Object.entries(productCount).sort((a, b) => b[1] - a[1]).slice(0, 5)
-    .map(([n, q]) => `• ${q}x ${n}`).join('\n') || '—';
+    .map(([n, q]) => `• ${q}x ${escapeHtml(n)}`).join('\n') || '—';
 
   const text = `📊 <b>Resumo diário</b> (${new Date().toLocaleDateString('pt-BR')})\n` +
     `Pedidos: <b>${count}</b>\n` +
@@ -131,6 +131,9 @@ async function dailySummary(supabase: any) {
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
   try {
+    const unauth = await verifyWebhookSecret(req, corsHeaders);
+    if (unauth) return unauth;
+
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL')!,
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
