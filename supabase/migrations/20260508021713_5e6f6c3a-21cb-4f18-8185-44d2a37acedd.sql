@@ -1,0 +1,1 @@
+revoke execute on function public.notify_telegram_order() from public, anon, authenticated;
