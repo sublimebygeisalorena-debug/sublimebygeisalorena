@@ -115,7 +115,7 @@ async function dailySummary(supabase: any) {
     }
   }
   const top = Object.entries(productCount).sort((a, b) => b[1] - a[1]).slice(0, 5)
-    .map(([n, q]) => `• ${q}x ${n}`).join('\n') || '—';
+    .map(([n, q]) => `• ${q}x ${escapeHtml(n)}`).join('\n') || '—';
 
   const text = `📊 <b>Resumo diário</b> (${new Date().toLocaleDateString('pt-BR')})\n` +
     `Pedidos: <b>${count}</b>\n` +
