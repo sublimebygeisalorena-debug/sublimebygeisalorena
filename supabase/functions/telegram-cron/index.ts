@@ -31,7 +31,7 @@ async function checkAbandonedCheckouts() {
   let data: any;
   try {
     data = await shopifyAdmin(
-      `checkouts.json?status=open&updated_at_min=${encodeURIComponent(max)}&updated_at_max=${encodeURIComponent(cutoff)}&limit=50`
+      `checkouts.json?created_at_min=${encodeURIComponent(max)}&created_at_max=${encodeURIComponent(cutoff)}&limit=50`
     );
   } catch (e) {
     console.error('abandoned checkouts fetch failed', e);
