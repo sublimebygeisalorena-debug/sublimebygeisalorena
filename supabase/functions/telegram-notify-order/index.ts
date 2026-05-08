@@ -36,8 +36,8 @@ Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
 
   try {
-    const unauth = await verifyWebhookSecret(req);
-    if (unauth) return new Response(unauth.body, { status: unauth.status, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    const unauth = await verifyWebhookSecret(req, corsHeaders);
+    if (unauth) return unauth;
 
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     const TELEGRAM_API_KEY = Deno.env.get('TELEGRAM_API_KEY');
