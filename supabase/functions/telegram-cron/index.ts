@@ -12,8 +12,10 @@ const SHOPIFY_API_VERSION = '2025-07';
 const LOW_STOCK_THRESHOLD = 5;
 
 async function shopifyAdmin(path: string): Promise<any> {
-  const token = Deno.env.get('SHOPIFY_ACCESS_TOKEN');
-  if (!token) throw new Error('SHOPIFY_ACCESS_TOKEN not configured');
+  // Try online token first (user-scoped, has full permissions), fallback to app token
+  let token = Deno.env.get('SHOPIFY_ONLINE_ACCESS_TOKEN:user:KGhbAUfXvvhq8LRgfIlNPEd0c3K2')
+    || Deno.env.get('SHOPIFY_ACCESS_TOKEN');
+  if (!token) throw new Error('No Shopify token configured');
   const url = `https://${SHOPIFY_DOMAIN}/admin/api/${SHOPIFY_API_VERSION}/${path}`;
   const r = await fetch(url, {
     headers: { 'X-Shopify-Access-Token': token, 'Content-Type': 'application/json' },
