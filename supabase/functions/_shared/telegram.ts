@@ -31,17 +31,23 @@ async function getExpectedSecret(): Promise<string> {
   return cachedSecret;
 }
 
-export async function verifyWebhookSecret(req: Request): Promise<Response | null> {
+export async function verifyWebhookSecret(req: Request, corsHeaders: Record<string,string> = {}): Promise<Response | null> {
   const provided = req.headers.get('x-webhook-secret') ?? '';
   let expected: string;
   try {
     expected = await getExpectedSecret();
   } catch (e) {
     console.error('secret fetch failed', e);
-    return new Response(JSON.stringify({ error: 'server misconfigured' }), { status: 500 });
+    return new Response(JSON.stringify({ error: 'server misconfigured' }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
   }
   if (!provided || !timingSafeEqual(provided, expected)) {
-    return new Response(JSON.stringify({ error: 'unauthorized' }), { status: 401 });
+    return new Response(JSON.stringify({ error: 'unauthorized' }), {
+      status: 401,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
   }
   return null;
 }
