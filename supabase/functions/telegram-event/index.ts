@@ -33,8 +33,8 @@ function buildMessage(event: string, data: any): string | null {
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
   try {
-    const unauth = await verifyWebhookSecret(req);
-    if (unauth) return new Response(unauth.body, { status: unauth.status, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    const unauth = await verifyWebhookSecret(req, corsHeaders);
+    if (unauth) return unauth;
 
     const payload = await req.json();
     const text = buildMessage(payload?.event, payload?.data);
