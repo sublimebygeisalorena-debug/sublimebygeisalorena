@@ -131,6 +131,9 @@ async function dailySummary(supabase: any) {
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
   try {
+    const unauth = await verifyWebhookSecret(req, corsHeaders);
+    if (unauth) return unauth;
+
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL')!,
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
