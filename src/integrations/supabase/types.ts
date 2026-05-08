@@ -191,6 +191,24 @@ export type Database = {
         }
         Relationships: []
       }
+      telegram_alerts_log: {
+        Row: {
+          alert_key: string
+          id: string
+          sent_at: string
+        }
+        Insert: {
+          alert_key: string
+          id?: string
+          sent_at?: string
+        }
+        Update: {
+          alert_key?: string
+          id?: string
+          sent_at?: string
+        }
+        Relationships: []
+      }
       telegram_subscribers: {
         Row: {
           chat_id: number
