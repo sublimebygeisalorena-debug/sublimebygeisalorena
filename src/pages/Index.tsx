@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useCartSync } from "@/hooks/useCartSync";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { ShopifyProduct, STOREFRONT_QUERY, storefrontApiRequest } from "@/lib/shopify";
-import heroImg from "@/assets/hero.jpg";
+import heroImg from "/hero-new.jpg";
 import foundersImg from "@/assets/founders.jpg";
 
 const Index = () => {
@@ -67,7 +67,7 @@ const Index = () => {
           </div>
           <div className="relative">
             <div className="aspect-[4/5] overflow-hidden">
-              <img src={hero.image_url || heroImg} alt="Cabelo saudável e brilhante" className="w-full h-full object-cover" width={1536} height={1024} />
+              <img src={hero.image_url || heroImg} alt="Cabelo saudável e brilhante" className="w-full h-full px-0 mx-0 object-scale-down" width={1536} height={1024} />
             </div>
             <div className="absolute -bottom-6 -left-6 bg-background border border-border p-6 max-w-[220px] hidden md:block shadow-soft">
               <p className="font-display text-3xl">7</p>
