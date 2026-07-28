@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Sparkles, Leaf, FlaskConical, Heart } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -8,13 +8,16 @@ import { Button } from "@/components/ui/button";
 import { useCartSync } from "@/hooks/useCartSync";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { ShopifyProduct, STOREFRONT_QUERY, storefrontApiRequest } from "@/lib/shopify";
+import { useProductsManager } from "@/hooks/useProductsManager";
 import heroImg from "/hero-new.jpg";
 import foundersImg from "@/assets/founders.jpg";
 
 const Index = () => {
   useCartSync();
-  const [products, setProducts] = useState<ShopifyProduct[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { shopifyProducts: localShopifyProducts, loading: localLoading } = useProductsManager();
+  const [remoteProducts, setRemoteProducts] = useState<ShopifyProduct[]>([]);
+  const [fetchingRemote, setFetchingRemote] = useState(true);
+
   const { data: hero } = useSiteContent("home_hero", {
     eyebrow: "Coleção essencial",
     title: "A ciência do cuidado capilar em suas mãos.",
@@ -32,14 +35,28 @@ const Index = () => {
 
   useEffect(() => {
     document.title = "Sublime by Geisa Lorena — Cosmética capilar de alta performance";
+    let active = true;
     (async () => {
       try {
         const data = await storefrontApiRequest(STOREFRONT_QUERY, { first: 20, query: null });
-        setProducts(data?.data?.products?.edges || []);
-      } finally { setLoading(false); }
+        if (active && data?.data?.products?.edges?.length > 0) {
+          setRemoteProducts(data.data.products.edges);
+        }
+      } catch {
+        // Fallback to local products
+      } finally {
+        if (active) setFetchingRemote(false);
+      }
     })();
+    return () => { active = false; };
   }, []);
 
+  const products = useMemo(() => {
+    if (remoteProducts.length > 0) return remoteProducts;
+    return localShopifyProducts;
+  }, [remoteProducts, localShopifyProducts]);
+
+  const loading = localLoading && fetchingRemote;
 
   return (
     <div className="min-h-screen bg-background">
@@ -100,7 +117,7 @@ const Index = () => {
         <div className="text-center max-w-2xl mx-auto mb-16">
           <p className="text-xs tracking-luxe uppercase text-accent mb-4">Nossa coleção</p>
           <h2 className="font-display text-4xl md:text-5xl mb-4">Os essenciais da Sublime</h2>
-          <p className="text-muted-foreground">Cinco produtos pensados para um ritual completo de cuidado.</p>
+          <p className="text-muted-foreground">Produtos pensados para um ritual completo de cuidado capilar.</p>
         </div>
 
         {loading ? (
@@ -146,9 +163,9 @@ const Index = () => {
         </div>
         <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
           {[
-            { n: "01", t: "Higienize", d: "Shampoo pH Balance para limpar sem agredir." },
-            { n: "02", t: "Trate", d: "Máscara pH Balance para repor massa e nutrientes." },
-            { n: "03", t: "Finalize", d: "Leave-in 10 em 1 + Reparador de Pontas para selar o cuidado." },
+            { n: "01", t: "Higienize", d: "Shampoo Pós-Química para limpar sem agredir a fibra." },
+            { n: "02", t: "Trate", d: "Máscara Pós-Química para repor massa e nutrientes profundos." },
+            { n: "03", t: "Finalize", d: "Leave-In Termoprotetor 10x1 + Reparador de Pontas para selar." },
           ].map((s) => (
             <div key={s.n} className="border border-border p-8 bg-card">
               <p className="font-display text-5xl text-accent mb-4">{s.n}</p>

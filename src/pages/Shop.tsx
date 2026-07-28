@@ -4,25 +4,42 @@ import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
 import { useCartSync } from "@/hooks/useCartSync";
 import { ShopifyProduct, STOREFRONT_QUERY, storefrontApiRequest } from "@/lib/shopify";
+import { useProductsManager } from "@/hooks/useProductsManager";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 
 const Shop = () => {
   useCartSync();
-  const [products, setProducts] = useState<ShopifyProduct[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { shopifyProducts: localShopifyProducts, loading: localLoading } = useProductsManager();
+  const [remoteProducts, setRemoteProducts] = useState<ShopifyProduct[]>([]);
+  const [fetchingRemote, setFetchingRemote] = useState(true);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string>("Todos");
 
   useEffect(() => {
     document.title = "Loja — Sublime by Geisa Lorena";
+    let active = true;
     (async () => {
       try {
         const data = await storefrontApiRequest(STOREFRONT_QUERY, { first: 100, query: null });
-        setProducts(data?.data?.products?.edges || []);
-      } finally { setLoading(false); }
+        if (active && data?.data?.products?.edges?.length > 0) {
+          setRemoteProducts(data.data.products.edges);
+        }
+      } catch {
+        // Fallback to local managed products
+      } finally {
+        if (active) setFetchingRemote(false);
+      }
     })();
+    return () => { active = false; };
   }, []);
+
+  const products = useMemo(() => {
+    if (remoteProducts.length > 0) return remoteProducts;
+    return localShopifyProducts;
+  }, [remoteProducts, localShopifyProducts]);
+
+  const loading = localLoading && fetchingRemote;
 
   const categories = useMemo(() => {
     const set = new Set<string>();
@@ -31,7 +48,7 @@ const Shop = () => {
   }, [products]);
 
   const featured = useMemo(() => {
-    return products.filter((p) => (p.node.tags || []).map(t => t.toLowerCase()).includes("destaque")).slice(0, 4);
+    return products.filter((p) => (p.node.tags || []).map((t) => t.toLowerCase()).includes("destaque")).slice(0, 4);
   }, [products]);
 
   const filtered = useMemo(() => {

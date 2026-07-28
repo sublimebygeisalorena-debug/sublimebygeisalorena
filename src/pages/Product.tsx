@@ -9,11 +9,14 @@ import { useCartSync } from "@/hooks/useCartSync";
 import { useCartStore } from "@/stores/cartStore";
 import { PRODUCT_BY_HANDLE_QUERY, storefrontApiRequest, formatBRL, ShopifyProduct } from "@/lib/shopify";
 import { productContent } from "@/data/productContent";
+import { useProductsManager, localToShopifyProduct } from "@/hooks/useProductsManager";
 import { toast } from "sonner";
 
 const ProductPage = () => {
   useCartSync();
   const { handle } = useParams();
+  const { products: localProducts, loading: localLoading } = useProductsManager();
+
   const [product, setProduct] = useState<ShopifyProduct["node"] | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeImg, setActiveImg] = useState(0);
@@ -23,23 +26,45 @@ const ProductPage = () => {
 
   useEffect(() => {
     setLoading(true);
+    let active = true;
     (async () => {
       try {
         const data = await storefrontApiRequest(PRODUCT_BY_HANDLE_QUERY, { handle });
-        setProduct(data?.data?.productByHandle || null);
-      } finally { setLoading(false); }
+        if (active && data?.data?.productByHandle) {
+          setProduct(data.data.productByHandle);
+          setLoading(false);
+          return;
+        }
+      } catch {
+        // Fallback to local
+      }
+
+      // Check local products
+      if (active) {
+        const found = localProducts.find((p) => p.handle === handle);
+        if (found) {
+          setProduct(localToShopifyProduct(found).node);
+        } else {
+          setProduct(null);
+        }
+        setLoading(false);
+      }
     })();
-  }, [handle]);
+    return () => { active = false; };
+  }, [handle, localProducts]);
 
   useEffect(() => {
     if (product) document.title = `${product.title} — Sublime by Geisa Lorena`;
   }, [product]);
 
-  if (loading) {
+  if (loading || localLoading) {
     return (
       <div className="min-h-screen bg-background">
         <Header />
-        <div className="container py-32 text-center"><Loader2 className="w-6 h-6 animate-spin mx-auto" /></div>
+        <div className="container py-32 text-center">
+          <Loader2 className="w-6 h-6 animate-spin mx-auto text-accent mb-2" />
+          <p className="text-xs uppercase tracking-luxe text-muted-foreground">Carregando detalhes do produto…</p>
+        </div>
       </div>
     );
   }
@@ -50,7 +75,7 @@ const ProductPage = () => {
         <Header />
         <div className="container py-32 text-center">
           <p className="text-muted-foreground mb-4">Produto não encontrado.</p>
-          <Link to="/loja" className="underline">Voltar à loja</Link>
+          <Link to="/loja" className="underline text-sm uppercase tracking-luxe">Voltar à loja</Link>
         </div>
       </div>
     );
@@ -58,7 +83,15 @@ const ProductPage = () => {
 
   const variant = product.variants.edges[0]?.node;
   const images = product.images.edges;
-  const content = productContent[product.handle];
+  
+  // Try static productContent first, or extract from local product definition
+  const localMatch = localProducts.find((p) => p.handle === product.handle);
+  const content = productContent[product.handle] || (localMatch ? {
+    benefits: localMatch.benefits,
+    howToUse: localMatch.howToUse,
+    composition: localMatch.composition,
+  } : null);
+
   const wrappedProduct: ShopifyProduct = { node: product };
 
   const handleAdd = async () => {
@@ -112,7 +145,7 @@ const ProductPage = () => {
             <p className="font-display text-3xl">{formatBRL(product.priceRange.minVariantPrice.amount, product.priceRange.minVariantPrice.currencyCode)}</p>
             <div className="text-muted-foreground leading-relaxed pt-2" dangerouslySetInnerHTML={{ __html: product.description.replace(/\n/g, "<br />") }} />
 
-            {content?.benefits && (
+            {content?.benefits && content.benefits.length > 0 && (
               <ul className="space-y-2 pt-4">
                 {content.benefits.map((b) => (
                   <li key={b} className="flex gap-3 text-sm">
@@ -135,7 +168,7 @@ const ProductPage = () => {
             </div>
 
             <Accordion type="single" collapsible className="pt-6">
-              {content?.howToUse && (
+              {content?.howToUse && content.howToUse.length > 0 && (
                 <AccordionItem value="use" className="border-border">
                   <AccordionTrigger className="text-xs uppercase tracking-luxe">Modo de uso</AccordionTrigger>
                   <AccordionContent>
