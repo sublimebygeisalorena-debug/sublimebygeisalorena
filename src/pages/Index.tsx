@@ -4,12 +4,11 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
 import { TestimonialsCarousel } from "@/components/TestimonialsCarousel";
-import { Button } from "@/components/ui/button";
+import { HomeHeroCarousel } from "@/components/HomeHeroCarousel";
 import { useCartSync } from "@/hooks/useCartSync";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { ShopifyProduct, STOREFRONT_QUERY, storefrontApiRequest } from "@/lib/shopify";
 import { useProductsManager } from "@/hooks/useProductsManager";
-import heroImg from "/hero-new.jpg";
 import foundersImg from "@/assets/founders.jpg";
 
 const Index = () => {
@@ -18,12 +17,6 @@ const Index = () => {
   const [remoteProducts, setRemoteProducts] = useState<ShopifyProduct[]>([]);
   const [fetchingRemote, setFetchingRemote] = useState(true);
 
-  const { data: hero } = useSiteContent("home_hero", {
-    eyebrow: "Coleção essencial",
-    title: "A ciência do cuidado capilar em suas mãos.",
-    subtitle: "Fórmulas profissionais com pH balanceado, óleos nobres e proteção térmica.",
-    image_url: "",
-  });
   const { data: history } = useSiteContent("home_history", {
     eyebrow: "Nossa história",
     title: "Onde a ciência encontra o cuidado.",
@@ -62,37 +55,8 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Header />
 
-      {/* HERO */}
-      <section className="relative">
-        <div className="container grid lg:grid-cols-2 gap-12 items-center py-20 lg:py-28">
-          <div className="space-y-8 lg:pr-10">
-            <p className="text-xs tracking-luxe uppercase text-accent">{hero.eyebrow}</p>
-            <h1 className="font-display text-5xl md:text-6xl lg:text-7xl leading-[1.05]">
-              {hero.title}
-            </h1>
-            <p className="text-muted-foreground text-lg max-w-md leading-relaxed whitespace-pre-line">
-              {hero.subtitle}
-            </p>
-            <div className="flex gap-4 pt-2">
-              <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-none h-12 px-8 text-xs uppercase tracking-luxe">
-                <a href="#produtos">Ver produtos</a>
-              </Button>
-              <Button asChild variant="ghost" className="rounded-none h-12 px-6 text-xs uppercase tracking-luxe hover:text-accent">
-                <a href="#historia">Nossa história</a>
-              </Button>
-            </div>
-          </div>
-          <div className="relative">
-            <div className="aspect-[4/5] overflow-hidden">
-              <img src={hero.image_url || heroImg} alt="Cabelo saudável e brilhante" className="w-full h-full px-0 mx-0 object-scale-down" width={1536} height={1024} />
-            </div>
-            <div className="absolute -bottom-6 -left-6 bg-background border border-border p-6 max-w-[220px] hidden md:block shadow-soft">
-              <p className="font-display text-3xl">7</p>
-              <p className="text-xs uppercase tracking-luxe text-muted-foreground mt-1">óleos nobres no blend reparador</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* HERO CAROUSEL (Renders auto-rotating banners every 8s + admin managed) */}
+      <HomeHeroCarousel />
 
       {/* DIFERENCIAIS */}
       <section className="bg-secondary/50 py-20">

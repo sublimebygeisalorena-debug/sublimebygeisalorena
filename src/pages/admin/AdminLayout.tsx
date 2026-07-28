@@ -4,6 +4,7 @@ import { Footer } from "@/components/Footer";
 
 const tabs = [
   { to: "/admin", label: "Visão geral", end: true },
+  { to: "/admin/banners", label: "Banners (Carrossel)" },
   { to: "/admin/produtos", label: "Anúncios / Produtos" },
   { to: "/admin/conteudo", label: "Conteúdo" },
   { to: "/admin/artigos", label: "Artigos" },

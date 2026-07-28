@@ -18,6 +18,7 @@ import Pedidos from "./pages/Pedidos.tsx";
 import Admin from "./pages/Admin.tsx";
 import AdminLayout from "./pages/admin/AdminLayout.tsx";
 import AdminHome from "./pages/admin/AdminHome.tsx";
+import AdminBanners from "./pages/admin/AdminBanners.tsx";
 import AdminProducts from "./pages/admin/AdminProducts.tsx";
 import AdminContent from "./pages/admin/AdminContent.tsx";
 import { AdminArticles, AdminArticleEditor } from "./pages/admin/AdminArticles.tsx";
@@ -48,6 +49,7 @@ const App = () => (
             <Route path="/conta/pedidos" element={<ProtectedRoute><Pedidos /></ProtectedRoute>} />
             <Route path="/admin" element={<ProtectedRoute requireAdmin><AdminLayout /></ProtectedRoute>}>
               <Route index element={<AdminHome />} />
+              <Route path="banners" element={<AdminBanners />} />
               <Route path="produtos" element={<AdminProducts />} />
               <Route path="conteudo" element={<AdminContent />} />
               <Route path="artigos" element={<AdminArticles />} />
