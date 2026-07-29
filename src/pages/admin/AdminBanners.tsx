@@ -151,6 +151,38 @@ export const AdminBanners = () => {
               {/* IMAGE UPLOAD */}
               <div className="space-y-4">
                 <Label className="text-xs uppercase tracking-luxe font-medium">Imagem do Banner</Label>
+
+                {/* RECOMMENDED SIZE TIP */}
+                <div className="bg-accent/5 border border-accent/20 p-4 space-y-2.5">
+                  <p className="text-[11px] uppercase tracking-luxe font-semibold text-accent flex items-center gap-1.5">
+                    <ImageIcon className="w-3.5 h-3.5" />
+                    Tamanho Recomendado
+                  </p>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-background/60 border border-border px-3 py-2 text-center">
+                      <p className="font-mono text-sm font-bold text-foreground">1920 × 820 px</p>
+                      <p className="text-[10px] text-muted-foreground mt-0.5">Dimensões ideais</p>
+                    </div>
+                    <div className="bg-background/60 border border-border px-3 py-2 text-center">
+                      <p className="font-mono text-sm font-bold text-foreground">16 : 7,5</p>
+                      <p className="text-[10px] text-muted-foreground mt-0.5">Proporção (aspect ratio)</p>
+                    </div>
+                  </div>
+                  <ul className="space-y-1">
+                    {[
+                      "Imagem horizontal — paisagem/widescreen",
+                      "Formato JPG ou WebP para melhor qualidade",
+                      "Máximo 10 MB por imagem",
+                      "Conteúdo importante: posicione ao centro-direito",
+                    ].map((tip) => (
+                      <li key={tip} className="flex items-start gap-1.5 text-[11px] text-muted-foreground">
+                        <span className="text-accent mt-px">•</span>
+                        {tip}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
                 <ImageUploader
                   value={form.imageUrl}
                   onChange={(url) => setForm((prev) => ({ ...prev, imageUrl: url }))}
