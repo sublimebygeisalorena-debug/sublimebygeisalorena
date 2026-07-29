@@ -8,7 +8,7 @@ import { HomeHeroCarousel } from "@/components/HomeHeroCarousel";
 import { useCartSync } from "@/hooks/useCartSync";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { ShopifyProduct, STOREFRONT_QUERY, storefrontApiRequest } from "@/lib/shopify";
-import { useProductsManager } from "@/hooks/useProductsManager";
+import { useProductsManager, mergeProductImages } from "@/hooks/useProductsManager";
 import foundersImg from "@/assets/founders.jpg";
 
 const Index = () => {
@@ -33,7 +33,7 @@ const Index = () => {
       try {
         const data = await storefrontApiRequest(STOREFRONT_QUERY, { first: 20, query: null });
         if (active && data?.data?.products?.edges?.length > 0) {
-          setRemoteProducts(data.data.products.edges);
+          setRemoteProducts(mergeProductImages(data.data.products.edges));
         }
       } catch {
         // Fallback to local products
