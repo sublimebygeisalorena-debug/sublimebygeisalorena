@@ -76,3 +76,13 @@
   .tracking-luxe { letter-spacing: 0.18em; }
   .tracking-wide-title { letter-spacing: 0.15em; }
 }
+
+@keyframes productProgress {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+
+@keyframes bannerProgress {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
