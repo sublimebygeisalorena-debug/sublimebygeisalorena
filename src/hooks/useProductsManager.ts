@@ -97,8 +97,9 @@ export function useProductsManager() {
         .eq("id", "store_products")
         .maybeSingle();
 
-      if (!error && row?.data && Array.isArray(row.data.items)) {
-        setProducts(row.data.items as LocalProduct[]);
+      const payload = row?.data as { items?: unknown } | null;
+      if (!error && payload && Array.isArray(payload.items)) {
+        setProducts(payload.items as LocalProduct[]);
       } else {
         setProducts(defaultProducts);
       }
