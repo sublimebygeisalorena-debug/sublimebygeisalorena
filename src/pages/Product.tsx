@@ -117,26 +117,11 @@ const ProductPage = () => {
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
           {/* GALERIA */}
-          <div className="space-y-4">
-            <div className="aspect-square bg-muted overflow-hidden">
-              {images[activeImg] ? (
-                <img src={images[activeImg].node.url} alt={product.title} className="w-full h-full object-cover" />
-              ) : (
-                <div className="w-full h-full bg-gradient-to-br from-secondary to-muted flex items-center justify-center">
-                  <span className="font-display text-6xl text-muted-foreground/40">M</span>
-                </div>
-              )}
-            </div>
-            {images.length > 1 && (
-              <div className="grid grid-cols-5 gap-2">
-                {images.map((img, i) => (
-                  <button key={i} onClick={() => setActiveImg(i)} className={`aspect-square overflow-hidden border ${i === activeImg ? "border-foreground" : "border-border"}`}>
-                    <img src={img.node.url} alt="" className="w-full h-full object-cover" />
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+          <ProductGallery
+            images={images.map((img) => ({ url: img.node.url, altText: img.node.altText }))}
+            title={product.title}
+          />
+
 
           {/* INFO */}
           <div className="space-y-6 lg:pt-8">
