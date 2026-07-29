@@ -48,6 +48,41 @@ export function localToShopifyProduct(p: LocalProduct): ShopifyProduct {
   };
 }
 
+/**
+ * Produtos vindos do Shopify muitas vezes não têm imagem cadastrada.
+ * Aqui completamos com as imagens locais (por handle, ou por título aproximado).
+ */
+export function mergeProductImages(
+  remote: ShopifyProduct[],
+  locals: LocalProduct[] = defaultProducts
+): ShopifyProduct[] {
+  const norm = (s: string) =>
+    (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
+
+  return remote.map((p) => {
+    const hasImages = (p.node.images?.edges?.length ?? 0) > 0;
+    if (hasImages) return p;
+
+    const match =
+      locals.find((l) => l.handle === p.node.handle) ||
+      locals.find((l) => norm(l.handle) === norm(p.node.handle)) ||
+      locals.find((l) => norm(l.title).includes(norm(p.node.title).slice(0, 14)));
+
+    if (!match) return p;
+
+    const urls = [match.imageUrl, ...(match.additionalImages || [])].filter(Boolean);
+    if (urls.length === 0) return p;
+
+    return {
+      ...p,
+      node: {
+        ...p.node,
+        images: { edges: urls.map((url) => ({ node: { url, altText: p.node.title } })) },
+      },
+    };
+  });
+}
+
 export function useProductsManager() {
   const [products, setProducts] = useState<LocalProduct[]>(defaultProducts);
   const [loading, setLoading] = useState<boolean>(true);
