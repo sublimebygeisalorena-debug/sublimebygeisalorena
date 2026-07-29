@@ -1,10 +1,12 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { trackPageView } from "@/hooks/useAnalytics";
 import Index from "./pages/Index.tsx";
 import Shop from "./pages/Shop.tsx";
 import About from "./pages/About.tsx";
@@ -25,7 +27,17 @@ import { AdminArticles, AdminArticleEditor } from "./pages/admin/AdminArticles.t
 import AdminCustomers from "./pages/admin/AdminCustomers.tsx";
 import AdminOrders from "./pages/admin/AdminOrders.tsx";
 import AdminShop from "./pages/admin/AdminShop.tsx";
+import AdminMetrics from "./pages/admin/AdminMetrics.tsx";
 import NotFound from "./pages/NotFound.tsx";
+
+// Tracks page views on every route change
+const AnalyticsTracker = () => {
+  const location = useLocation();
+  useEffect(() => {
+    trackPageView(location.pathname);
+  }, [location.pathname]);
+  return null;
+};
 
 const queryClient = new QueryClient();
 
@@ -37,16 +49,16 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/loja" element={<Shop />} />
-            <Route path="/sobre" element={<About />} />
-            <Route path="/historia" element={<History />} />
-            <Route path="/product/:handle" element={<ProductPage />} />
-            <Route path="/cuidados" element={<Cuidados />} />
-            <Route path="/cuidados/:slug" element={<Artigo />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/conta" element={<ProtectedRoute><Conta /></ProtectedRoute>} />
-            <Route path="/conta/pedidos" element={<ProtectedRoute><Pedidos /></ProtectedRoute>} />
+            <Route path="/" element={<><AnalyticsTracker /><Index /></>} />
+            <Route path="/loja" element={<><AnalyticsTracker /><Shop /></>} />
+            <Route path="/sobre" element={<><AnalyticsTracker /><About /></>} />
+            <Route path="/historia" element={<><AnalyticsTracker /><History /></>} />
+            <Route path="/product/:handle" element={<><AnalyticsTracker /><ProductPage /></>} />
+            <Route path="/cuidados" element={<><AnalyticsTracker /><Cuidados /></>} />
+            <Route path="/cuidados/:slug" element={<><AnalyticsTracker /><Artigo /></>} />
+            <Route path="/auth" element={<><AnalyticsTracker /><Auth /></>} />
+            <Route path="/conta" element={<ProtectedRoute><AnalyticsTracker /><Conta /></ProtectedRoute>} />
+            <Route path="/conta/pedidos" element={<ProtectedRoute><AnalyticsTracker /><Pedidos /></ProtectedRoute>} />
             <Route path="/admin" element={<ProtectedRoute requireAdmin><AdminLayout /></ProtectedRoute>}>
               <Route index element={<AdminHome />} />
               <Route path="banners" element={<AdminBanners />} />
@@ -58,6 +70,7 @@ const App = () => (
               <Route path="clientes" element={<AdminCustomers />} />
               <Route path="pedidos" element={<AdminOrders />} />
               <Route path="loja" element={<AdminShop />} />
+              <Route path="metricas" element={<AdminMetrics />} />
             </Route>
             <Route path="/admin/legacy" element={<ProtectedRoute requireAdmin><Admin /></ProtectedRoute>} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

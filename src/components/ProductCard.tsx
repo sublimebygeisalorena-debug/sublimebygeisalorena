@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/stores/cartStore";
 import { ShopifyProduct, formatBRL } from "@/lib/shopify";
 import { toast } from "sonner";
+import { trackProductClick } from "@/hooks/useAnalytics";
 
 export const ProductCard = ({ product }: { product: ShopifyProduct }) => {
   const addItem = useCartStore((s) => s.addItem);
@@ -26,7 +27,11 @@ export const ProductCard = ({ product }: { product: ShopifyProduct }) => {
   };
 
   return (
-    <Link to={`/product/${product.node.handle}`} className="group block">
+    <Link
+      to={`/product/${product.node.handle}`}
+      className="group block"
+      onClick={() => trackProductClick(product.node.handle, product.node.title)}
+    >
       <div className="aspect-[4/5] bg-muted overflow-hidden mb-5 relative">
         {image ? (
           <img
