@@ -19,8 +19,9 @@ export function useBannersManager() {
         .eq("id", "home_banners")
         .maybeSingle();
 
-      if (!error && row?.data && Array.isArray(row.data.items)) {
-        setBanners(row.data.items as HomeBanner[]);
+      const payload = row?.data as { items?: unknown } | null;
+      if (!error && payload && Array.isArray(payload.items)) {
+        setBanners(payload.items as HomeBanner[]);
       } else {
         setBanners(defaultBanners);
       }
