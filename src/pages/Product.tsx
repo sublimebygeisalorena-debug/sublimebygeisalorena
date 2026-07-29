@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { ProductGallery } from "@/components/ProductGallery";
+
 import { useCartSync } from "@/hooks/useCartSync";
 import { useCartStore } from "@/stores/cartStore";
 import { PRODUCT_BY_HANDLE_QUERY, storefrontApiRequest, formatBRL, ShopifyProduct } from "@/lib/shopify";
