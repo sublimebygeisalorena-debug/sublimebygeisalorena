@@ -4,7 +4,7 @@ import { Footer } from "@/components/Footer";
 import { ProductCard } from "@/components/ProductCard";
 import { useCartSync } from "@/hooks/useCartSync";
 import { ShopifyProduct, STOREFRONT_QUERY, storefrontApiRequest } from "@/lib/shopify";
-import { useProductsManager } from "@/hooks/useProductsManager";
+import { useProductsManager, mergeProductImages } from "@/hooks/useProductsManager";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 
@@ -23,7 +23,7 @@ const Shop = () => {
       try {
         const data = await storefrontApiRequest(STOREFRONT_QUERY, { first: 100, query: null });
         if (active && data?.data?.products?.edges?.length > 0) {
-          setRemoteProducts(data.data.products.edges);
+          setRemoteProducts(mergeProductImages(data.data.products.edges));
         }
       } catch {
         // Fallback to local managed products

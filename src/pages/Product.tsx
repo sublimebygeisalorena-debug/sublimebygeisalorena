@@ -9,7 +9,7 @@ import { useCartSync } from "@/hooks/useCartSync";
 import { useCartStore } from "@/stores/cartStore";
 import { PRODUCT_BY_HANDLE_QUERY, storefrontApiRequest, formatBRL, ShopifyProduct } from "@/lib/shopify";
 import { productContent } from "@/data/productContent";
-import { useProductsManager, localToShopifyProduct } from "@/hooks/useProductsManager";
+import { useProductsManager, localToShopifyProduct, mergeProductImages } from "@/hooks/useProductsManager";
 import { toast } from "sonner";
 
 const ProductPage = () => {
@@ -31,7 +31,7 @@ const ProductPage = () => {
       try {
         const data = await storefrontApiRequest(PRODUCT_BY_HANDLE_QUERY, { handle });
         if (active && data?.data?.productByHandle) {
-          setProduct(data.data.productByHandle);
+          setProduct(mergeProductImages([{ node: data.data.productByHandle }])[0].node);
           setLoading(false);
           return;
         }
