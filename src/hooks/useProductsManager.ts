@@ -74,9 +74,7 @@ export function mergeProductImages(
     // União: mantém as fotos do Shopify e acrescenta as cadastradas no painel,
     // assim o carrossel automático sempre tem todas as imagens disponíveis.
     const urls = Array.from(new Set([...remoteUrls, ...localUrls]));
-    if (urls.length === 0 || urls.length === remoteUrls.length) {
-      return urls.length === remoteUrls.length ? p : p;
-    }
+    if (urls.length === 0 || urls.length === remoteUrls.length) return p;
 
     return {
       ...p,
