@@ -60,18 +60,23 @@ export function mergeProductImages(
     (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
 
   return remote.map((p) => {
-    const hasImages = (p.node.images?.edges?.length ?? 0) > 0;
-    if (hasImages) return p;
+    const remoteUrls = (p.node.images?.edges ?? []).map((e) => e.node.url).filter(Boolean);
 
     const match =
       locals.find((l) => l.handle === p.node.handle) ||
       locals.find((l) => norm(l.handle) === norm(p.node.handle)) ||
       locals.find((l) => norm(l.title).includes(norm(p.node.title).slice(0, 14)));
 
-    if (!match) return p;
+    const localUrls = match
+      ? [match.imageUrl, ...(match.additionalImages || [])].filter(Boolean)
+      : [];
 
-    const urls = [match.imageUrl, ...(match.additionalImages || [])].filter(Boolean);
-    if (urls.length === 0) return p;
+    // União: mantém as fotos do Shopify e acrescenta as cadastradas no painel,
+    // assim o carrossel automático sempre tem todas as imagens disponíveis.
+    const urls = Array.from(new Set([...remoteUrls, ...localUrls]));
+    if (urls.length === 0 || urls.length === remoteUrls.length) {
+      return urls.length === remoteUrls.length ? p : p;
+    }
 
     return {
       ...p,
