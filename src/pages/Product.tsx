@@ -28,13 +28,20 @@ const ProductPage = () => {
   const isLoading = useCartStore((s) => s.isLoading);
 
   useEffect(() => {
+    // Wait until local products are loaded from Supabase before fetching,
+    // so mergeProductImages receives the full admin-saved image list.
+    if (localLoading) return;
+
     setLoading(true);
     let active = true;
     (async () => {
       try {
         const data = await storefrontApiRequest(PRODUCT_BY_HANDLE_QUERY, { handle });
         if (active && data?.data?.productByHandle) {
-          setProduct(mergeProductImages([{ node: data.data.productByHandle }])[0].node);
+          // Pass localProducts so admin-uploaded additional images are merged in
+          setProduct(
+            mergeProductImages([{ node: data.data.productByHandle }], localProducts)[0].node
+          );
           setLoading(false);
           return;
         }
@@ -42,7 +49,7 @@ const ProductPage = () => {
         // Fallback to local
       }
 
-      // Check local products
+      // Fallback: check local-only products (not in Shopify)
       if (active) {
         const found = localProducts.find((p) => p.handle === handle);
         if (found) {
@@ -54,7 +61,7 @@ const ProductPage = () => {
       }
     })();
     return () => { active = false; };
-  }, [handle, localProducts]);
+  }, [handle, localProducts, localLoading]);
 
   useEffect(() => {
     if (product) document.title = `${product.title} — Sublime by Geisa Lorena`;
