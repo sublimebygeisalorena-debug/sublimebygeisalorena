@@ -28,6 +28,7 @@ import AdminCustomers from "./pages/admin/AdminCustomers.tsx";
 import AdminOrders from "./pages/admin/AdminOrders.tsx";
 import AdminShop from "./pages/admin/AdminShop.tsx";
 import AdminMetrics from "./pages/admin/AdminMetrics.tsx";
+import AdminSocialMedia from "./pages/admin/AdminSocialMedia.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 // Tracks page views on every route change
@@ -71,6 +72,7 @@ const App = () => (
               <Route path="pedidos" element={<AdminOrders />} />
               <Route path="loja" element={<AdminShop />} />
               <Route path="metricas" element={<AdminMetrics />} />
+              <Route path="redes-sociais" element={<AdminSocialMedia />} />
             </Route>
             <Route path="/admin/legacy" element={<ProtectedRoute requireAdmin><Admin /></ProtectedRoute>} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

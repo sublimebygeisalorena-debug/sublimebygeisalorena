@@ -8,6 +8,7 @@ const tabs = [
   { to: "/admin/banners", label: "Banners (Carrossel)" },
   { to: "/admin/produtos", label: "Anúncios / Produtos" },
   { to: "/admin/conteudo", label: "Conteúdo" },
+  { to: "/admin/redes-sociais", label: "Redes Sociais" },
   { to: "/admin/artigos", label: "Artigos" },
   { to: "/admin/clientes", label: "Clientes" },
   { to: "/admin/pedidos", label: "Pedidos" },

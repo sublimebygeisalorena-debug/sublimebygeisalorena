@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { FileText, Users, ShoppingBag, Newspaper, Store, Settings } from "lucide-react";
+import { FileText, Users, ShoppingBag, Newspaper, Store, Settings, Share2 } from "lucide-react";
 
 const cards = [
   { to: "/admin/conteudo", icon: Settings, label: "Conteúdo das páginas", desc: "Edite hero, sobre, história e cuidados" },
+  { to: "/admin/redes-sociais", icon: Share2, label: "Redes Sociais", desc: "Gerencie links do Instagram, TikTok, WhatsApp e mais" },
   { to: "/admin/artigos", icon: Newspaper, label: "Artigos", desc: "Crie e edite artigos da seção Cuidados" },
   { to: "/admin/clientes", icon: Users, label: "Clientes", desc: "Veja todos os clientes cadastrados" },
   { to: "/admin/pedidos", icon: FileText, label: "Pedidos", desc: "Acompanhe os pedidos da loja" },
