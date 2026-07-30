@@ -7,6 +7,7 @@ import { ShopifyProduct, formatBRL } from "@/lib/shopify";
 import { toast } from "sonner";
 import { trackProductClick } from "@/hooks/useAnalytics";
 import { Lightbox } from "@/components/Lightbox";
+import { getProductBadges } from "@/lib/productBadges";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 const CAROUSEL_INTERVAL = 3500; // ms between auto-slides
@@ -125,6 +126,8 @@ export const ProductCard = ({ product }: { product: ShopifyProduct }) => {
     toast.success("Adicionado à sacola", { position: "top-center" });
   };
 
+  const badges = getProductBadges(product.node);
+
   const lightboxImages = images.map((img) => ({
     url: img.url,
     alt: img.altText || product.node.title,
@@ -177,6 +180,20 @@ export const ProductCard = ({ product }: { product: ShopifyProduct }) => {
               ))
             )}
           </div>
+
+          {/* ── Selos automáticos ────────────────────────────────── */}
+          {badges.length > 0 && (
+            <div className="absolute top-3 right-3 z-30 flex flex-col items-end gap-1.5">
+              {badges.map((b) => (
+                <span
+                  key={b.label}
+                  className={`px-2.5 py-1 text-[10px] uppercase tracking-luxe ${b.className}`}
+                >
+                  {b.label}
+                </span>
+              ))}
+            </div>
+          )}
 
           {/* ── Lightbox open button (hover) ─────────────────────── */}
           {images.length > 0 && isHovered && (
