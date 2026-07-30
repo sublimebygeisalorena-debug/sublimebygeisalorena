@@ -25,6 +25,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Images,
+  Lightbulb,
 } from "lucide-react";
 import { formatBRL } from "@/lib/shopify";
 import { toast } from "sonner";
@@ -354,6 +355,7 @@ export const AdminProducts = () => {
     benefits: [],
     howToUse: [],
     composition: "",
+    professionalTip: "",
     featured: false,
     available: true,
   });
@@ -375,6 +377,7 @@ export const AdminProducts = () => {
       benefits: [],
       howToUse: [],
       composition: "",
+      professionalTip: "",
       featured: false,
       available: true,
     });
@@ -388,6 +391,7 @@ export const AdminProducts = () => {
       additionalImages: prod.additionalImages || [],
       benefits: prod.benefits || [],
       howToUse: prod.howToUse || [],
+      professionalTip: prod.professionalTip || "",
     });
     setIsNew(false);
     setEditingProduct(prod);
@@ -668,6 +672,24 @@ export const AdminProducts = () => {
                   rows={3}
                   className="rounded-none"
                 />
+              </div>
+
+              {/* Professional Tip */}
+              <div className="space-y-2 pt-2">
+                <Label className="text-xs uppercase tracking-luxe font-medium flex items-center gap-2">
+                  <Lightbulb className="w-3.5 h-3.5 text-accent" />
+                  Dica Profissional
+                </Label>
+                <Textarea
+                  value={form.professionalTip || ""}
+                  onChange={(e) => setForm((prev) => ({ ...prev, professionalTip: e.target.value }))}
+                  placeholder="ex: Para potencializar o resultado, aplique após a máscara com o cabelo ainda úmido e use diariamente..."
+                  rows={3}
+                  className="rounded-none"
+                />
+                <p className="text-[11px] text-muted-foreground">
+                  Esta dica aparece em destaque na página do produto, antes dos acordeons de informações técnicas.
+                </p>
               </div>
             </div>
 

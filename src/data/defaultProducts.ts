@@ -10,6 +10,7 @@ export interface LocalProduct {
   benefits: string[];
   howToUse: string[];
   composition: string;
+  professionalTip?: string;
   featured?: boolean;
   available?: boolean;
 }

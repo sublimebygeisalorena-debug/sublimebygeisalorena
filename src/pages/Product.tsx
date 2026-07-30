@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, Loader2, Check } from "lucide-react";
+import { ArrowLeft, Loader2, Check, Lightbulb } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Header } from "@/components/Header";
@@ -86,14 +86,34 @@ const ProductPage = () => {
 
   const variant = product.variants.edges[0]?.node;
   const images = product.images.edges;
-  
-  // Try static productContent first, or extract from local product definition
-  const localMatch = localProducts.find((p) => p.handle === product.handle);
-  const content = productContent[product.handle] || (localMatch ? {
-    benefits: localMatch.benefits,
-    howToUse: localMatch.howToUse,
-    composition: localMatch.composition,
-  } : null);
+
+  // Priority: local admin data (Supabase) > static productContent file
+  // This ensures edits made in the admin panel are always reflected.
+  const localMatch = localProducts.find(
+    (p) => p.handle === handle || p.handle === product.handle
+  );
+
+  const staticContent = productContent[product.handle] || productContent[handle || ""];
+
+  const content = localMatch
+    ? {
+        benefits: localMatch.benefits?.length ? localMatch.benefits : staticContent?.benefits,
+        howToUse: localMatch.howToUse?.length ? localMatch.howToUse : staticContent?.howToUse,
+        composition: localMatch.composition || staticContent?.composition,
+        professionalTip: localMatch.professionalTip,
+        // Use local description if Shopify returned empty
+        description: localMatch.description || product.description,
+      }
+    : {
+        ...staticContent,
+        description: product.description,
+        professionalTip: undefined,
+      };
+
+  // Resolved description: prefer local admin data if Shopify description is empty
+  const resolvedDescription = localMatch?.description
+    ? (product.description || localMatch.description)
+    : product.description;
 
   const wrappedProduct: ShopifyProduct = { node: product };
 
@@ -143,7 +163,7 @@ const ProductPage = () => {
             {product.productType && <p className="text-xs tracking-luxe uppercase text-accent">{product.productType}</p>}
             <h1 className="font-display text-3xl md:text-4xl lg:text-5xl leading-tight">{product.title}</h1>
             <p className="font-display text-2xl md:text-3xl">{formatBRL(product.priceRange.minVariantPrice.amount, product.priceRange.minVariantPrice.currencyCode)}</p>
-            <div className="text-muted-foreground leading-relaxed pt-2" dangerouslySetInnerHTML={{ __html: product.description.replace(/\n/g, "<br />") }} />
+            <div className="text-muted-foreground leading-relaxed pt-2" dangerouslySetInnerHTML={{ __html: resolvedDescription.replace(/\n/g, "<br />") }} />
 
             {content?.benefits && content.benefits.length > 0 && (
               <ul className="space-y-2 pt-4">
@@ -166,6 +186,17 @@ const ProductPage = () => {
                 {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Adicionar à sacola"}
               </Button>
             </div>
+
+            {/* Professional Tip */}
+            {content?.professionalTip && (
+              <div className="flex gap-3 bg-accent/5 border border-accent/20 p-4 rounded-sm">
+                <Lightbulb className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" strokeWidth={1.5} />
+                <div>
+                  <p className="text-[10px] uppercase tracking-luxe text-accent mb-1 font-medium">Dica Profissional</p>
+                  <p className="text-sm text-foreground leading-relaxed">{content.professionalTip}</p>
+                </div>
+              </div>
+            )}
 
             <Accordion type="single" collapsible className="pt-6">
               {content?.howToUse && content.howToUse.length > 0 && (
