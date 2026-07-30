@@ -6,6 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ProductGallery } from "@/components/ProductGallery";
+import { getProductBadges } from "@/lib/productBadges";
 
 import { useCartSync } from "@/hooks/useCartSync";
 import { useCartStore } from "@/stores/cartStore";
@@ -127,6 +128,18 @@ const ProductPage = () => {
 
           {/* INFO */}
           <div className="space-y-6 lg:pt-8">
+            {(() => {
+              const badges = getProductBadges(product as any);
+              return badges.length > 0 ? (
+                <div className="flex flex-wrap gap-2">
+                  {badges.map((b) => (
+                    <span key={b.label} className={`px-2.5 py-1 text-[10px] uppercase tracking-luxe ${b.className}`}>
+                      {b.label}
+                    </span>
+                  ))}
+                </div>
+              ) : null;
+            })()}
             {product.productType && <p className="text-xs tracking-luxe uppercase text-accent">{product.productType}</p>}
             <h1 className="font-display text-4xl md:text-5xl leading-tight">{product.title}</h1>
             <p className="font-display text-3xl">{formatBRL(product.priceRange.minVariantPrice.amount, product.priceRange.minVariantPrice.currencyCode)}</p>

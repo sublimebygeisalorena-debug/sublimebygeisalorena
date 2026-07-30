@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetDescription } from "@/components/ui/sheet";
-import { ShoppingBag, Minus, Plus, Trash2, ExternalLink, Loader2 } from "lucide-react";
+import { ShoppingBag, Minus, Plus, Trash2, ExternalLink, Loader2, Tag, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 import { useCartStore } from "@/stores/cartStore";
 import { formatBRL } from "@/lib/shopify";
 import { useAuth } from "@/hooks/useAuth";
@@ -10,11 +12,24 @@ import { supabase } from "@/integrations/supabase/client";
 
 export const CartDrawer = () => {
   const [open, setOpen] = useState(false);
-  const { items, isLoading, isSyncing, updateQuantity, removeItem, getCheckoutUrl, syncCart, cartId } = useCartStore();
+  const {
+    items, isLoading, isSyncing, updateQuantity, removeItem, getCheckoutUrl, syncCart, cartId,
+    discountCode, discountApplicable, discountedTotal, isApplyingDiscount, applyDiscount, removeDiscount,
+  } = useCartStore();
+  const [coupon, setCoupon] = useState("");
   const { user } = useAuth();
   const totalItems = items.reduce((s, i) => s + i.quantity, 0);
   const total = items.reduce((s, i) => s + parseFloat(i.price.amount) * i.quantity, 0);
   const currency = items[0]?.price.currencyCode || "BRL";
+  const finalTotal = discountApplicable && discountedTotal ? parseFloat(discountedTotal) : total;
+  const savings = Math.max(0, total - finalTotal);
+
+  const handleApplyCoupon = async (code?: string) => {
+    const value = (code ?? coupon).trim();
+    const r = await applyDiscount(value);
+    if (r.ok) { setCoupon(""); toast.success(r.message, { position: "top-center" }); }
+    else toast.error(r.message, { position: "top-center" });
+  };
 
   useEffect(() => { if (open) syncCart(); }, [open, syncCart]);
 
@@ -27,7 +42,7 @@ export const CartDrawer = () => {
           user_id: user.id,
           shopify_cart_id: cartId,
           checkout_url: url,
-          total: Number(total.toFixed(2)),
+          total: Number(finalTotal.toFixed(2)),
           currency,
           item_count: totalItems,
           status: "pending",
@@ -108,9 +123,57 @@ export const CartDrawer = () => {
                 ))}
               </div>
               <div className="space-y-4 pt-6 border-t border-border">
+                {/* CUPOM DE DESCONTO */}
+                <div className="space-y-2">
+                  {discountApplicable && discountCode ? (
+                    <div className="flex items-center justify-between border border-accent/50 bg-accent/10 px-3 py-2">
+                      <span className="text-xs uppercase tracking-luxe flex items-center gap-2">
+                        <Tag className="w-3 h-3" /> {discountCode} aplicado
+                      </span>
+                      <button type="button" onClick={removeDiscount} aria-label="Remover cupom">
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex gap-2">
+                        <Input
+                          value={coupon}
+                          onChange={(e) => setCoupon(e.target.value.toUpperCase())}
+                          onKeyDown={(e) => { if (e.key === "Enter") handleApplyCoupon(); }}
+                          placeholder="Cupom de desconto"
+                          className="rounded-none h-10 text-xs uppercase tracking-luxe"
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => handleApplyCoupon()}
+                          disabled={isApplyingDiscount || !coupon.trim()}
+                          className="rounded-none h-10 text-xs uppercase tracking-luxe"
+                        >
+                          {isApplyingDiscount ? <Loader2 className="w-3 h-3 animate-spin" /> : "Aplicar"}
+                        </Button>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleApplyCoupon("KITCRONOGRAMA")}
+                        className="text-[11px] text-muted-foreground hover:text-accent underline underline-offset-4"
+                      >
+                        Usar cupom do Kit Cronograma Pós-Química (KITCRONOGRAMA)
+                      </button>
+                    </>
+                  )}
+                </div>
+
+                {savings > 0 && (
+                  <div className="flex justify-between items-baseline text-sm">
+                    <span className="text-muted-foreground">Desconto</span>
+                    <span className="text-accent">− {formatBRL(savings, currency)}</span>
+                  </div>
+                )}
                 <div className="flex justify-between items-baseline">
                   <span className="text-sm tracking-luxe uppercase text-muted-foreground">Total</span>
-                  <span className="font-display text-2xl">{formatBRL(total, currency)}</span>
+                  <span className="font-display text-2xl">{formatBRL(finalTotal, currency)}</span>
                 </div>
                 <Button onClick={checkout} className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-none h-12 tracking-luxe uppercase text-xs" disabled={isLoading || isSyncing}>
                   {isLoading || isSyncing ? <Loader2 className="w-4 h-4 animate-spin" /> : <><ExternalLink className="w-4 h-4 mr-2" />Finalizar compra</>}
