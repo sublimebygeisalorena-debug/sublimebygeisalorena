@@ -55,8 +55,8 @@ export const HomeHeroCarousel = () => {
 
   if (loading) {
     return (
-      <section className="container py-8">
-        <div className="w-full aspect-[16/9] md:aspect-[16/7] bg-muted/30 animate-pulse flex items-center justify-center border border-border">
+      <section className="container py-4 sm:py-6 lg:py-8">
+        <div className="w-full aspect-[4/3] sm:aspect-[16/9] md:aspect-[16/7] bg-muted/30 animate-pulse flex items-center justify-center border border-border">
           <span className="text-xs tracking-luxe uppercase text-muted-foreground">
             Carregando banners da loja…
           </span>
@@ -67,13 +67,13 @@ export const HomeHeroCarousel = () => {
 
   return (
     <section
-      className="relative w-full py-4 sm:py-6 lg:py-8 bg-background group"
+      className="relative w-full py-2 sm:py-4 lg:py-8 bg-background group"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      <div className="container px-4 sm:px-6 lg:px-8">
-        {/* WIDESCREEN 16:9 BANNER CONTAINER */}
-        <div className="relative w-full aspect-[16/9] md:aspect-[16/7.5] lg:aspect-[16/6.8] min-h-[360px] sm:min-h-[440px] md:min-h-[520px] lg:min-h-[580px] border border-border bg-card overflow-hidden shadow-soft">
+      <div className="container px-3 sm:px-6 lg:px-8">
+        {/* BANNER CONTAINER */}
+        <div className="relative w-full aspect-[4/3] sm:aspect-[16/9] md:aspect-[16/7.5] lg:aspect-[16/6.8] min-h-[260px] sm:min-h-[380px] md:min-h-[480px] lg:min-h-[560px] border border-border bg-card overflow-hidden shadow-soft">
           {bannersToRender.map((banner, index) => {
             const isActive = index === currentIndex;
 
@@ -93,38 +93,41 @@ export const HomeHeroCarousel = () => {
                     loading={index === 0 ? "eager" : "lazy"}
                   />
                   
-                  {/* Subtle Gradient Overlay for Legibility */}
+                  {/* Gradient Overlay: vertical on mobile, horizontal on md+ */}
                   {(banner.title || banner.eyebrow) && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/40 to-transparent md:w-3/4 lg:w-3/5 pointer-events-none" />
+                    <>
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/40 to-transparent md:hidden pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/40 to-transparent hidden md:block md:w-3/4 lg:w-3/5 pointer-events-none" />
+                    </>
                   )}
                 </div>
 
                 {/* OVERLAY TEXT CONTENT */}
                 {(banner.title || banner.eyebrow || banner.subtitle || banner.buttonText) && (
-                  <div className="relative z-20 p-6 sm:p-10 md:p-14 lg:p-20 max-w-xl lg:max-w-2xl space-y-4 sm:space-y-6">
+                  <div className="relative z-20 p-4 sm:p-8 md:p-14 lg:p-20 max-w-xs sm:max-w-xl lg:max-w-2xl space-y-3 sm:space-y-6 mt-auto md:mt-0">
                     {banner.eyebrow && (
-                      <p className="text-[11px] sm:text-xs tracking-luxe uppercase text-accent font-semibold drop-shadow-sm">
+                      <p className="text-[10px] sm:text-xs tracking-luxe uppercase text-accent font-semibold drop-shadow-sm">
                         {banner.eyebrow}
                       </p>
                     )}
 
                     {banner.title && (
-                      <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-foreground tracking-tight drop-shadow-sm">
+                      <h1 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.1] text-foreground tracking-tight drop-shadow-sm">
                         {banner.title}
                       </h1>
                     )}
 
                     {banner.subtitle && (
-                      <p className="text-muted-foreground text-xs sm:text-sm md:text-base leading-relaxed line-clamp-3 md:line-clamp-none max-w-lg">
+                      <p className="text-muted-foreground text-xs sm:text-sm md:text-base leading-relaxed line-clamp-2 sm:line-clamp-3 md:line-clamp-none max-w-lg">
                         {banner.subtitle}
                       </p>
                     )}
 
                     {banner.buttonText && (
-                      <div className="pt-2 sm:pt-4">
+                      <div className="pt-1 sm:pt-4">
                         <Button
                           asChild
-                          className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-none h-11 sm:h-13 px-6 sm:px-8 text-xs uppercase tracking-luxe shadow-soft"
+                          className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-none h-10 sm:h-11 px-5 sm:px-8 text-[10px] sm:text-xs uppercase tracking-luxe shadow-soft"
                         >
                           <a href={banner.buttonUrl || "#produtos"}>{banner.buttonText}</a>
                         </Button>
@@ -139,22 +142,22 @@ export const HomeHeroCarousel = () => {
           {/* CONTROLS (IF > 1 BANNER) */}
           {total > 1 && (
             <>
-              {/* PREVIOUS BUTTON */}
+              {/* PREVIOUS BUTTON — always visible on mobile */}
               <button
                 onClick={prevSlide}
                 aria-label="Banner anterior"
-                className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 bg-background/80 hover:bg-background border border-border flex items-center justify-center text-foreground transition-all opacity-0 group-hover:opacity-100 hover:scale-110 shadow-soft"
+                className="absolute left-2 sm:left-5 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-12 sm:h-12 bg-background/80 hover:bg-background border border-border flex items-center justify-center text-foreground transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100 hover:scale-110 shadow-soft"
               >
-                <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+                <ChevronLeft className="w-4 h-4 sm:w-6 sm:h-6" />
               </button>
 
-              {/* NEXT BUTTON */}
+              {/* NEXT BUTTON — always visible on mobile */}
               <button
                 onClick={nextSlide}
                 aria-label="Próximo banner"
-                className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 bg-background/80 hover:bg-background border border-border flex items-center justify-center text-foreground transition-all opacity-0 group-hover:opacity-100 hover:scale-110 shadow-soft"
+                className="absolute right-2 sm:right-5 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-12 sm:h-12 bg-background/80 hover:bg-background border border-border flex items-center justify-center text-foreground transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100 hover:scale-110 shadow-soft"
               >
-                <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+                <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6" />
               </button>
 
               {/* AUTOPLAY PROGRESS & DOTS */}

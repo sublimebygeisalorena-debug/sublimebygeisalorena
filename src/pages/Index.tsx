@@ -59,8 +59,8 @@ const Index = () => {
       <HomeHeroCarousel />
 
       {/* DIFERENCIAIS */}
-      <section className="bg-secondary/50 py-20">
-        <div className="container grid md:grid-cols-4 gap-10">
+      <section className="bg-secondary/50 py-12 md:py-20">
+        <div className="container grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10">
           {[
             { icon: FlaskConical, title: "pH Balanceado", desc: "Fórmulas equilibradas que respeitam a fibra capilar." },
             { icon: Leaf, title: "Cruelty-free", desc: "Não testamos em animais — nunca." },
@@ -68,27 +68,27 @@ const Index = () => {
             { icon: Heart, title: "Pós-química", desc: "Especialistas em cabelos quimicamente tratados." },
           ].map((d, i) => (
             <div key={i} className="text-center">
-              <d.icon className="w-7 h-7 mx-auto text-accent mb-4" strokeWidth={1.2} />
-              <h3 className="font-display text-xl mb-2">{d.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{d.desc}</p>
+              <d.icon className="w-6 h-6 md:w-7 md:h-7 mx-auto text-accent mb-3 md:mb-4" strokeWidth={1.2} />
+              <h3 className="font-display text-base md:text-xl mb-1 md:mb-2">{d.title}</h3>
+              <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">{d.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* PRODUTOS */}
-      <section id="produtos" className="container py-24">
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <p className="text-xs tracking-luxe uppercase text-accent mb-4">Nossa coleção</p>
-          <h2 className="font-display text-4xl md:text-5xl mb-4">Os essenciais da Sublime</h2>
-          <p className="text-muted-foreground">Produtos pensados para um ritual completo de cuidado capilar.</p>
+      <section id="produtos" className="container py-14 md:py-24">
+        <div className="text-center max-w-2xl mx-auto mb-10 md:mb-16">
+          <p className="text-xs tracking-luxe uppercase text-accent mb-3 md:mb-4">Nossa coleção</p>
+          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl mb-3 md:mb-4">Os essenciais da Sublime</h2>
+          <p className="text-muted-foreground text-sm md:text-base">Produtos pensados para um ritual completo de cuidado capilar.</p>
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-3 gap-y-8 md:gap-x-6 md:gap-y-12">
             {Array.from({ length: 4 }).map((_, i) => (
               <div key={i} className="animate-pulse">
-                <div className="aspect-[4/5] bg-muted mb-5" />
+                <div className="aspect-[4/5] bg-muted mb-4" />
                 <div className="h-4 bg-muted w-3/4 mb-2" />
                 <div className="h-4 bg-muted w-1/3" />
               </div>
@@ -97,43 +97,43 @@ const Index = () => {
         ) : products.length === 0 ? (
           <p className="text-center text-muted-foreground">Nenhum produto encontrado.</p>
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-3 gap-y-8 md:gap-x-6 md:gap-y-12">
             {products.map((p) => <ProductCard key={p.node.id} product={p} />)}
           </div>
         )}
       </section>
 
       {/* HISTÓRIA */}
-      <section id="historia" className="bg-secondary/40 py-24">
-        <div className="container grid lg:grid-cols-2 gap-16 items-center">
-          <div className="aspect-[5/4] overflow-hidden">
+      <section id="historia" className="bg-secondary/40 py-14 md:py-24">
+        <div className="container grid lg:grid-cols-2 gap-10 md:gap-16 items-center">
+          <div className="aspect-[5/4] overflow-hidden order-2 lg:order-1">
             <img src={history.image_url || foundersImg} alt="Fundadores em laboratório" className="w-full h-full object-cover" loading="lazy" width={1280} height={1024} />
           </div>
-          <div className="space-y-6">
+          <div className="space-y-4 md:space-y-6 order-1 lg:order-2">
             <p className="text-xs tracking-luxe uppercase text-accent">{history.eyebrow}</p>
-            <h2 className="font-display text-4xl md:text-5xl leading-tight">{history.title}</h2>
+            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl leading-tight">{history.title}</h2>
             {history.p1 && <p className="text-muted-foreground leading-relaxed whitespace-pre-line">{history.p1}</p>}
             {history.p2 && <p className="text-muted-foreground leading-relaxed whitespace-pre-line">{history.p2}</p>}
-            {history.quote && <p className="font-display text-xl pt-2 italic">"{history.quote}"</p>}
+            {history.quote && <p className="font-display text-lg md:text-xl pt-2 italic">"{history.quote}"</p>}
           </div>
         </div>
       </section>
 
       {/* RITUAL */}
-      <section id="ritual" className="container py-24">
-        <div className="max-w-3xl mx-auto text-center mb-16">
-          <p className="text-xs tracking-luxe uppercase text-accent mb-4">O ritual</p>
-          <h2 className="font-display text-4xl md:text-5xl mb-4">Um cronograma simples, resultados que duram.</h2>
+      <section id="ritual" className="container py-14 md:py-24">
+        <div className="max-w-3xl mx-auto text-center mb-10 md:mb-16">
+          <p className="text-xs tracking-luxe uppercase text-accent mb-3 md:mb-4">O ritual</p>
+          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl mb-3 md:mb-4">Um cronograma simples, resultados que duram.</h2>
         </div>
-        <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-4 md:gap-8 max-w-4xl mx-auto">
           {[
             { n: "01", t: "Higienize", d: "Shampoo Pós-Química para limpar sem agredir a fibra." },
             { n: "02", t: "Trate", d: "Máscara Pós-Química para repor massa e nutrientes profundos." },
             { n: "03", t: "Finalize", d: "Leave-In Termoprotetor 10x1 + Reparador de Pontas para selar." },
           ].map((s) => (
-            <div key={s.n} className="border border-border p-8 bg-card">
-              <p className="font-display text-5xl text-accent mb-4">{s.n}</p>
-              <h3 className="font-display text-2xl mb-2">{s.t}</h3>
+            <div key={s.n} className="border border-border p-6 md:p-8 bg-card">
+              <p className="font-display text-4xl md:text-5xl text-accent mb-3 md:mb-4">{s.n}</p>
+              <h3 className="font-display text-xl md:text-2xl mb-2">{s.t}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{s.d}</p>
             </div>
           ))}

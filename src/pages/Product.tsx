@@ -113,12 +113,12 @@ const ProductPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <div className="container py-12">
-        <Link to="/loja" className="inline-flex items-center text-xs uppercase tracking-luxe text-muted-foreground hover:text-foreground mb-8">
+      <div className="container py-6 md:py-12">
+        <Link to="/loja" className="inline-flex items-center text-xs uppercase tracking-luxe text-muted-foreground hover:text-foreground mb-6 md:mb-8">
           <ArrowLeft className="w-4 h-4 mr-2" /> Voltar à loja
         </Link>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
+        <div className="grid lg:grid-cols-2 gap-8 md:gap-12 lg:gap-20">
           {/* GALERIA */}
           <ProductGallery
             images={images.map((img) => ({ url: img.node.url, altText: img.node.altText }))}
@@ -127,7 +127,7 @@ const ProductPage = () => {
 
 
           {/* INFO */}
-          <div className="space-y-6 lg:pt-8">
+          <div className="space-y-4 md:space-y-6 lg:pt-8">
             {(() => {
               const badges = getProductBadges(product as any);
               return badges.length > 0 ? (
@@ -141,8 +141,8 @@ const ProductPage = () => {
               ) : null;
             })()}
             {product.productType && <p className="text-xs tracking-luxe uppercase text-accent">{product.productType}</p>}
-            <h1 className="font-display text-4xl md:text-5xl leading-tight">{product.title}</h1>
-            <p className="font-display text-3xl">{formatBRL(product.priceRange.minVariantPrice.amount, product.priceRange.minVariantPrice.currencyCode)}</p>
+            <h1 className="font-display text-3xl md:text-4xl lg:text-5xl leading-tight">{product.title}</h1>
+            <p className="font-display text-2xl md:text-3xl">{formatBRL(product.priceRange.minVariantPrice.amount, product.priceRange.minVariantPrice.currencyCode)}</p>
             <div className="text-muted-foreground leading-relaxed pt-2" dangerouslySetInnerHTML={{ __html: product.description.replace(/\n/g, "<br />") }} />
 
             {content?.benefits && content.benefits.length > 0 && (
@@ -156,13 +156,13 @@ const ProductPage = () => {
               </ul>
             )}
 
-            <div className="flex items-center gap-4 pt-6">
-              <div className="flex items-center border border-border h-14">
-                <button onClick={() => setQty(Math.max(1, qty - 1))} className="px-4 h-full hover:bg-secondary">−</button>
-                <span className="px-4 w-12 text-center">{qty}</span>
-                <button onClick={() => setQty(qty + 1)} className="px-4 h-full hover:bg-secondary">+</button>
+            <div className="flex items-center gap-3 pt-4 md:pt-6">
+              <div className="flex items-center border border-border h-12 md:h-14">
+                <button onClick={() => setQty(Math.max(1, qty - 1))} className="px-3 md:px-4 h-full hover:bg-secondary text-xl">−</button>
+                <span className="px-3 md:px-4 w-10 md:w-12 text-center">{qty}</span>
+                <button onClick={() => setQty(qty + 1)} className="px-3 md:px-4 h-full hover:bg-secondary text-xl">+</button>
               </div>
-              <Button onClick={handleAdd} disabled={isLoading || !variant?.availableForSale} className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 rounded-none h-14 text-xs uppercase tracking-luxe">
+              <Button onClick={handleAdd} disabled={isLoading || !variant?.availableForSale} className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 rounded-none h-12 md:h-14 text-xs uppercase tracking-luxe">
                 {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Adicionar à sacola"}
               </Button>
             </div>

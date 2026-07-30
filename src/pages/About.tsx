@@ -16,25 +16,25 @@ const About = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <section className="container py-20 lg:py-28 max-w-4xl">
-        <p className="text-xs tracking-luxe uppercase text-accent mb-4">{data.eyebrow}</p>
-        <h1 className="font-display text-5xl md:text-7xl leading-[1.05] mb-10">{data.title}</h1>
-        <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl whitespace-pre-line">{data.intro}</p>
+      <section className="container py-12 md:py-20 lg:py-28 max-w-4xl">
+        <p className="text-xs tracking-luxe uppercase text-accent mb-3 md:mb-4">{data.eyebrow}</p>
+        <h1 className="font-display text-4xl md:text-6xl lg:text-7xl leading-[1.05] mb-6 md:mb-10">{data.title}</h1>
+        <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl whitespace-pre-line">{data.intro}</p>
       </section>
 
 
-      <section className="bg-secondary/40 py-20">
+      <section className="bg-secondary/40 py-14 md:py-20">
         <div className="container max-w-5xl">
-          <h2 className="font-display text-4xl mb-16 text-center">No que acreditamos</h2>
-          <div className="grid md:grid-cols-3 gap-10">
+          <h2 className="font-display text-3xl md:text-4xl mb-10 md:mb-16 text-center">No que acreditamos</h2>
+          <div className="grid md:grid-cols-3 gap-6 md:gap-10">
             {[
               { icon: ShieldCheck, t: "Segurança em primeiro", d: "Fórmulas com pH balanceado, livres de formol e ingredientes agressivos." },
               { icon: Sparkles, t: "Resultado profissional", d: "Tecnologia desenvolvida para entregar a qualidade de um salão de alto padrão — em casa." },
               { icon: Leaf, t: "Consciência sempre", d: "Cruelty-free, embalagens recicláveis e fornecedores rigorosamente selecionados." },
             ].map((v, i) => (
-              <div key={i} className="bg-card border border-border p-8">
-                <v.icon className="w-7 h-7 text-accent mb-5" strokeWidth={1.2} />
-                <h3 className="font-display text-2xl mb-3">{v.t}</h3>
+              <div key={i} className="bg-card border border-border p-6 md:p-8">
+                <v.icon className="w-7 h-7 text-accent mb-4 md:mb-5" strokeWidth={1.2} />
+                <h3 className="font-display text-xl md:text-2xl mb-2 md:mb-3">{v.t}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{v.d}</p>
               </div>
             ))}
@@ -42,11 +42,11 @@ const About = () => {
         </div>
       </section>
 
-      <section className="container py-24 max-w-4xl">
-        <div className="grid md:grid-cols-2 gap-12">
+      <section className="container py-16 md:py-24 max-w-4xl">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12">
           <div>
-            <p className="text-xs tracking-luxe uppercase text-accent mb-4">Indicação de uso</p>
-            <h2 className="font-display text-3xl md:text-4xl mb-6 leading-tight">Cuidado completo para cabelos quimicamente tratados.</h2>
+            <p className="text-xs tracking-luxe uppercase text-accent mb-3 md:mb-4">Indicação de uso</p>
+            <h2 className="font-display text-2xl md:text-3xl lg:text-4xl mb-4 md:mb-6 leading-tight">Cuidado completo para cabelos quimicamente tratados.</h2>
             <p className="text-muted-foreground leading-relaxed">
               Linha especialmente desenvolvida para fios que passaram por procedimentos químicos e necessitam de hidratação, reconstrução e proteção contínua. Atende todos os tipos de cabelos quimicamente tratados — lisos, crespos, ondulados e cacheados.
             </p>
@@ -62,13 +62,13 @@ const About = () => {
         </div>
       </section>
 
-      <section className="bg-secondary/40 py-24">
+      <section className="bg-secondary/40 py-14 md:py-24">
         <div className="container max-w-4xl">
-          <div className="text-center mb-16">
-            <p className="text-xs tracking-luxe uppercase text-accent mb-4">Modo de uso</p>
-            <h2 className="font-display text-4xl md:text-5xl leading-tight">O ritual Sublime, passo a passo.</h2>
+          <div className="text-center mb-10 md:mb-16">
+            <p className="text-xs tracking-luxe uppercase text-accent mb-3 md:mb-4">Modo de uso</p>
+            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl leading-tight">O ritual Sublime, passo a passo.</h2>
           </div>
-          <div className="space-y-10">
+          <div className="space-y-8 md:space-y-10">
             {[
               {
                 n: "01",
@@ -96,11 +96,11 @@ const About = () => {
                 d: "Aplique algumas gotas nas palmas das mãos e distribua sobre o comprimento e as pontas dos cabelos secos ou úmidos. Para melhores resultados, utilize pelo menos duas vezes ao dia — mantém os fios nutridos, protegidos, com brilho intenso e livres de frizz.",
               },
             ].map((s) => (
-              <div key={s.n} className="grid grid-cols-[auto_1fr] gap-8 border-b border-border pb-10 last:border-0">
-                <p className="font-display text-5xl text-accent">{s.n}</p>
+              <div key={s.n} className="grid grid-cols-[auto_1fr] gap-5 md:gap-8 border-b border-border pb-8 md:pb-10 last:border-0">
+                <p className="font-display text-4xl md:text-5xl text-accent">{s.n}</p>
                 <div>
-                  <h3 className="font-display text-2xl mb-3">{s.t}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{s.d}</p>
+                  <h3 className="font-display text-xl md:text-2xl mb-2 md:mb-3">{s.t}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{s.d}</p>
                 </div>
               </div>
             ))}
@@ -109,9 +109,9 @@ const About = () => {
       </section>
 
 
-      <section className="container py-24 max-w-3xl text-center">
-        <p className="text-xs tracking-luxe uppercase text-accent mb-4">Nossa missão</p>
-        <h2 className="font-display text-4xl md:text-5xl mb-8 leading-tight">Democratizar o tratamento capilar de alta performance.</h2>
+      <section className="container py-16 md:py-24 max-w-3xl text-center">
+        <p className="text-xs tracking-luxe uppercase text-accent mb-3 md:mb-4">Nossa missão</p>
+        <h2 className="font-display text-3xl md:text-4xl lg:text-5xl mb-6 md:mb-8 leading-tight">Democratizar o tratamento capilar de alta performance.</h2>
         <p className="text-muted-foreground leading-relaxed">
           Acreditamos que cuidar dos cabelos não é luxo — é cuidado essencial. Nossa missão é tornar fórmulas profissionais acessíveis, sem comprometer a qualidade nem a segurança.
         </p>

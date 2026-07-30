@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
 
 interface GalleryImage {
@@ -19,6 +19,7 @@ export const ProductGallery = ({
   const [paused, setPaused] = useState(false);
   const [zoom, setZoom] = useState(false);
   const [origin, setOrigin] = useState("50% 50%");
+  const touchStartX = useRef<number | null>(null);
 
   const hasMultiple = images.length > 1;
 
@@ -65,19 +66,29 @@ export const ProductGallery = ({
     );
   }
 
+  // Touch swipe handlers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(dx) > 40) {
+      setPaused(true);
+      if (dx < 0) next(); else prev();
+    }
+    touchStartX.current = null;
+  };
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <div
         className="aspect-square bg-muted overflow-hidden relative group cursor-zoom-in"
-        onMouseEnter={() => {
-          setPaused(true);
-          setZoom(true);
-        }}
-        onMouseLeave={() => {
-          setPaused(false);
-          setZoom(false);
-        }}
+        onMouseEnter={() => { setPaused(true); setZoom(true); }}
+        onMouseLeave={() => { setPaused(false); setZoom(false); }}
         onMouseMove={handleMove}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
       >
         {images.map((img, i) => (
           <div
@@ -113,7 +124,7 @@ export const ProductGallery = ({
               type="button"
               onClick={prev}
               aria-label="Foto anterior"
-              className="absolute left-3 top-1/2 -translate-y-1/2 z-20 bg-background/85 border border-border/60 p-2 opacity-0 group-hover:opacity-100 hover:bg-background transition-all duration-300 -translate-x-2 group-hover:translate-x-0"
+              className="absolute left-3 top-1/2 -translate-y-1/2 z-20 bg-background/85 border border-border/60 p-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 hover:bg-background transition-all duration-300"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -121,7 +132,7 @@ export const ProductGallery = ({
               type="button"
               onClick={next}
               aria-label="Próxima foto"
-              className="absolute right-3 top-1/2 -translate-y-1/2 z-20 bg-background/85 border border-border/60 p-2 opacity-0 group-hover:opacity-100 hover:bg-background transition-all duration-300 translate-x-2 group-hover:translate-x-0"
+              className="absolute right-3 top-1/2 -translate-y-1/2 z-20 bg-background/85 border border-border/60 p-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 hover:bg-background transition-all duration-300"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -168,7 +179,7 @@ export const ProductGallery = ({
       </div>
 
       {hasMultiple && (
-        <div className="grid grid-cols-5 gap-2">
+        <div className="grid grid-cols-5 gap-1.5 md:gap-2">
           {images.map((img, i) => (
             <button
               key={`thumb-${i}`}

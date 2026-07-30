@@ -21,14 +21,14 @@ const AdminLayout = () => (
     <section className="container py-12">
       <p className="text-xs tracking-luxe uppercase text-accent mb-3">Painel admin</p>
       <h1 className="font-display text-3xl md:text-4xl mb-8">Sublime by Geisa Lorena</h1>
-      <nav className="flex flex-wrap gap-x-8 gap-y-3 border-b border-border mb-10">
+      <nav className="flex overflow-x-auto gap-x-4 md:gap-x-8 gap-y-3 border-b border-border mb-10 scrollbar-none pb-px">
         {tabs.map((t) => (
           <NavLink
             key={t.to}
             to={t.to}
             end={t.end}
             className={({ isActive }) =>
-              `text-xs uppercase tracking-luxe pb-3 -mb-px border-b-2 ${
+              `flex-shrink-0 text-xs uppercase tracking-luxe pb-3 -mb-px border-b-2 ${
                 isActive
                   ? "border-accent text-accent"
                   : "border-transparent text-muted-foreground hover:text-foreground"

@@ -205,7 +205,7 @@ export const ProductCard = ({ product }: { product: ShopifyProduct }) => {
                 setLightboxOpen(true);
               }}
               aria-label="Abrir galeria em tela cheia"
-              className="absolute top-3 left-3 z-30 bg-background/80 border border-border/60 p-2 hover:bg-background transition opacity-0 group-hover:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="absolute top-3 left-3 z-30 bg-background/80 border border-border/60 p-2 hover:bg-background transition opacity-100 md:opacity-0 md:group-hover:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
               <Expand className="w-3.5 h-3.5" />
             </button>
@@ -218,9 +218,7 @@ export const ProductCard = ({ product }: { product: ShopifyProduct }) => {
                 type="button"
                 aria-label={`Foto anterior — foto ${((currentIdx - 1 + images.length) % images.length) + 1} de ${images.length}`}
                 onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsPaused(true); prev(); }}
-                className={`absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-background/80 border border-border/60 p-1.5 hover:bg-background transition focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
-                  isHovered ? "opacity-100" : "opacity-0"
-                }`}
+                className={`absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-background/80 border border-border/60 p-1.5 hover:bg-background transition focus:outline-none focus-visible:ring-2 focus-visible:ring-accent opacity-100 md:opacity-0 md:group-hover:opacity-100`}
               >
                 <ChevronLeft className="w-3.5 h-3.5" />
               </button>
@@ -228,9 +226,7 @@ export const ProductCard = ({ product }: { product: ShopifyProduct }) => {
                 type="button"
                 aria-label={`Próxima foto — foto ${((currentIdx + 1) % images.length) + 1} de ${images.length}`}
                 onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsPaused(true); next(); }}
-                className={`absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-background/80 border border-border/60 p-1.5 hover:bg-background transition focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
-                  isHovered ? "opacity-100" : "opacity-0"
-                }`}
+                className={`absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-background/80 border border-border/60 p-1.5 hover:bg-background transition focus:outline-none focus-visible:ring-2 focus-visible:ring-accent opacity-100 md:opacity-0 md:group-hover:opacity-100`}
               >
                 <ChevronRight className="w-3.5 h-3.5" />
               </button>
@@ -304,7 +300,7 @@ export const ProductCard = ({ product }: { product: ShopifyProduct }) => {
               {product.node.productType}
             </p>
           )}
-          <h3 className="font-display text-xl leading-tight">{product.node.title}</h3>
+          <h3 className="font-display text-base md:text-xl leading-tight">{product.node.title}</h3>
           <div className="flex items-center justify-between pt-2">
             <span className="font-medium">
               {formatBRL(
