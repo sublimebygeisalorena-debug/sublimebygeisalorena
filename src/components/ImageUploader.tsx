@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Loader2, Upload, X } from "lucide-react";
 import { toast } from "sonner";
+import { normalizeProductImage } from "@/lib/imageStandard";
 
 interface Props {
   value: string;
@@ -14,15 +15,17 @@ export const ImageUploader = ({ value, onChange, label = "Imagem" }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
 
-  const upload = async (file: File) => {
-    if (file.size > 10 * 1024 * 1024) {
+  const upload = async (original: File) => {
+    if (original.size > 10 * 1024 * 1024) {
       toast.error("Imagem muito grande (máx 10MB)");
       return;
     }
     setUploading(true);
-    const ext = file.name.split(".").pop();
-    const path = `${crypto.randomUUID()}.${ext}`;
-    const { error } = await supabase.storage.from("media").upload(path, file, { upsert: false });
+    const file = await normalizeProductImage(original);
+    const path = `${crypto.randomUUID()}.jpg`;
+    const { error } = await supabase.storage
+      .from("media")
+      .upload(path, file, { upsert: false, contentType: file.type });
     if (error) {
       toast.error("Falha no upload");
       setUploading(false);

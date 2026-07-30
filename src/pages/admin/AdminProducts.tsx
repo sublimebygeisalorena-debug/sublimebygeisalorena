@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { useProductsManager, LocalProduct } from "@/hooks/useProductsManager";
 import { supabase } from "@/integrations/supabase/client";
+import { normalizeProductImage, PRODUCT_IMAGE_RATIO_LABEL } from "@/lib/imageStandard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -51,16 +52,17 @@ const MultiImageUploader = ({
   const allImages = [mainImage, ...additionalImages].filter(Boolean);
   const previewSrc = allImages[previewIndex] || "";
 
-  const uploadFile = async (file: File): Promise<string | null> => {
-    if (file.size > 10 * 1024 * 1024) {
+  const uploadFile = async (original: File): Promise<string | null> => {
+    if (original.size > 10 * 1024 * 1024) {
       toast.error("Imagem muito grande (máx 10 MB)");
       return null;
     }
-    const ext = file.name.split(".").pop();
-    const path = `${crypto.randomUUID()}.${ext}`;
+    // Padroniza toda foto de produto em 4:5 (1200x1500) sem cortes
+    const file = await normalizeProductImage(original);
+    const path = `${crypto.randomUUID()}.jpg`;
     const { error } = await supabase.storage
       .from("media")
-      .upload(path, file, { upsert: false });
+      .upload(path, file, { upsert: false, contentType: file.type });
     if (error) {
       toast.error("Falha no upload");
       return null;
@@ -135,6 +137,11 @@ const MultiImageUploader = ({
           ({allImages.length} foto{allImages.length !== 1 ? "s" : ""})
         </span>
       </Label>
+
+      <p className="text-[11px] text-muted-foreground -mt-2">
+        Padrão automático: todas as fotos são ajustadas para {PRODUCT_IMAGE_RATIO_LABEL}, formato
+        retrato, sem cortes. Envie imagens de boa resolução para melhor nitidez.
+      </p>
 
       {/* ── Large preview ─────────────────────────────────────────── */}
       <div className="relative aspect-[4/3] bg-muted border border-border overflow-hidden group">
